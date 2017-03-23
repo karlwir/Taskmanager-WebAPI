@@ -20,6 +20,8 @@ import se.kawi.taskmanagerservicelib.model.Team;
 import se.kawi.taskmanagerservicelib.model.User;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.service.TeamService;
+import se.kawi.taskmanagerwebapi.model.TeamDTO;
+import se.kawi.taskmanagerwebapi.model.UserDTO;
 import se.kawi.taskmanagerwebapi.resource.query.TeamQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.UserQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
@@ -38,14 +40,14 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@POST
-	public Response createTeam(@ValidTeamNew Team entity) {
-		return super.create(entity);
+	public Response createTeam(@ValidTeamNew TeamDTO teamDTO) {
+		return super.create(teamDTO.buildTeam());
 	}
 
 	@GET
-	@Path("/{id}")
-	public Response getTeam(@PathParam("id") Long id) {
-		return super.byId(id);
+	@Path("/{itemKey}")
+	public Response getTeam(@PathParam("itemKey") String itemKey) {
+		return super.byItemKey(itemKey);
 	}
 
 	@GET
@@ -60,37 +62,11 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@PUT
-	public Response updateTeam(@ValidTeam Team entity) {
-		return super.update(entity);
-	}
-
-	@DELETE
-	public Response deleteTeam(@ValidTeam Team entity) {
-		return super.delete(entity);
-	}
-
-	@GET
-	@Path("/{id}/users")
-	public Response getTeamMembers(@BeanParam UserQueryBean userQuery, @PathParam("id") Long id) {
+	public Response updateTeam(@ValidTeam TeamDTO teamDTO) {
 		return serviceRequest(() -> {
-			Team team = service.getById(id);
+			Team team = service.getByItemKey(teamDTO.getItemKey());
 			if (team != null) {
-				userQuery.setTeam(team);
-				List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
-				return Response.ok().entity(teamMembers).build();
-			} else {
-				return Response.status(404).build();
-			}
-		});
-	}
-
-	@PUT
-	@Path("/{id}/users")
-	public Response addTeamMember(@ValidUser User user, @PathParam("id") Long id) {
-		return serviceRequest(() -> {
-			Team team = service.getById(id);
-			if (team != null) {
-				service.addTeamMember(user, team);
+				service.save(teamDTO.reflectDTO(team));
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();
@@ -99,12 +75,46 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@DELETE
-	@Path("/{id}/users")
-	public Response removeTeamMember(@ValidUser User user, @PathParam("id") Long id) {
+	public Response deleteTeam(@ValidTeam TeamDTO teamDTO) {
+		return super.delete(teamDTO);
+	}
+
+	@GET
+	@Path("/{itemKey}/users")
+	public Response getTeamMembers(@BeanParam UserQueryBean userQuery, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			Team team = service.getById(id);
+			Team team = service.getByItemKey(itemKey);
 			if (team != null) {
-				service.removeTeamMember(user, team);
+				userQuery.setTeam(team);
+				List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
+				return Response.ok().entity(dtoFactory.buildUserDTOs(teamMembers)).build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
+	}
+
+	@PUT
+	@Path("/{itemKey}/users")
+	public Response addTeamMember(@ValidUser UserDTO userDTO, @PathParam("itemKey") String itemKey) {
+		return serviceRequest(() -> {
+			Team team = service.getByItemKey(itemKey);
+			if (team != null) {
+				service.addTeamMember(userDTO.getItemKey(), team);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
+	}
+
+	@DELETE
+	@Path("/{itemKey}/users")
+	public Response removeTeamMember(@ValidUser UserDTO userDTO, @PathParam("itemKey") String itemKey) {
+		return serviceRequest(() -> {
+			Team team = service.getByItemKey(itemKey);
+			if (team != null) {
+				service.removeTeamMember(userDTO.getItemKey(), team);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();
@@ -113,14 +123,14 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 	
 	@GET
-	@Path("/{id}/workitems")
-	public Response getTeamWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("id") Long id) {
+	@Path("/{itemKey}/workitems")
+	public Response getTeamWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			Team team = service.getById(id);
+			Team team = service.getByItemKey(itemKey);
 			if (team != null) {
 				workItemQuery.setUsers(team.getUsers());
 				List<WorkItem> teamWorkItems = service.getTeamWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
-				return Response.ok().entity(teamWorkItems).build();
+				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(teamWorkItems)).build();
 			}
 			return Response.status(404).build();
 		});

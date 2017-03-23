@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanagerservicelib.model.Issue;
 import se.kawi.taskmanagerservicelib.service.IssueService;
+import se.kawi.taskmanagerwebapi.model.IssueDTO;
 import se.kawi.taskmanagerwebapi.resource.query.IssueQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidIssue;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidIssueNew;
@@ -33,14 +34,14 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@POST
-	public Response createIssue(@ValidIssueNew Issue entity) {
-		return super.create(entity);
+	public Response createIssue(@ValidIssueNew IssueDTO issueDTO) {
+		return super.create(issueDTO.buildIssue());
 	}
 
 	@GET
-	@Path("/{id}")
-	public Response getIssue(@PathParam("id") Long id) {
-		return super.byId(id);
+	@Path("/{itemKey}")
+	public Response getIssue(@PathParam("itemKey") String itemKey) {
+		return super.byItemKey(itemKey);
 	}
 
 	@GET
@@ -55,13 +56,22 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@PUT
-	public Response updateIssue(@ValidIssue Issue entity) {
-		return super.update(entity);
+	public Response updateIssue(@ValidIssue IssueDTO issueDTO) {
+		return serviceRequest(() -> {
+			Issue issue = service.getByItemKey(issueDTO.getItemKey());
+			if (issue != null) {
+				service.save(issueDTO.reflectDTO(issue));
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+			
+		});
 	}
 
 	@DELETE
-	public Response deleteIssue(@ValidIssue Issue entity) {
-		return super.delete(entity);
+	public Response deleteIssue(@ValidIssue IssueDTO issueDTO) {
+		return super.delete(issueDTO);
 	}
 
 }

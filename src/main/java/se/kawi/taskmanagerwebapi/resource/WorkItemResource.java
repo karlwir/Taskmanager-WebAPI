@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import se.kawi.taskmanagerservicelib.model.Issue;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.service.WorkItemService;
+import se.kawi.taskmanagerwebapi.model.IssueDTO;
+import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 import se.kawi.taskmanagerwebapi.resource.query.IssueQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidIssue;
@@ -36,14 +38,14 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@POST
-	public Response createWorkItem(@ValidWorkItemNew WorkItem entity) {
-		return super.create(entity);
+	public Response createWorkItem(@ValidWorkItemNew WorkItemDTO workItemDTO) {
+		return super.create(workItemDTO.buildWorkItem());
 	}
 
 	@GET
-	@Path("/{id}")
-	public Response getWorkItem(@PathParam("id") Long id) {
-		return super.byId(id);
+	@Path("/{itemKey}")
+	public Response getWorkItem(@PathParam("itemKey") String itemKey) {
+		return super.byItemKey(itemKey);
 	}
 
 	@GET
@@ -58,36 +60,44 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@PUT
-	public Response updateWorkItem(@ValidWorkItem WorkItem entity) {
-		return super.update(entity);
+	public Response updateWorkItem(@ValidWorkItem WorkItemDTO workItemDTO) {
+		return serviceRequest(() -> {
+			WorkItem workItem = service.getByItemKey(workItemDTO.getItemKey());
+			if (workItem != null) {
+				service.save(workItemDTO.reflectDTO(workItem));
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
 	}
 
 	@DELETE
-	public Response deleteWorkItem(@ValidWorkItem WorkItem entity) {
-		return super.delete(entity);
+	public Response deleteWorkItem(@ValidWorkItem WorkItemDTO workItemDTO) {
+		return super.delete(workItemDTO);
 	}
 	
 	@GET
-	@Path("{id}/issues")
-	public Response getWorkItemIssues(@BeanParam IssueQueryBean issueQuery, @PathParam("id") Long id) {
+	@Path("{itemKey}/issues")
+	public Response getWorkItemIssues(@BeanParam IssueQueryBean issueQuery, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			WorkItem workItem = service.getById(id);
+			WorkItem workItem = service.getByItemKey(itemKey);
 			if (workItem != null) {
 				issueQuery.setWorkItem(workItem);
 				List<Issue> workItemsIssues = service.getWorkItemIssues(issueQuery.buildSpecification(), issueQuery.buildPageable());
-				return Response.ok().entity(workItemsIssues).build();
+				return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues)).build();
 			}
 			return Response.status(404).build();
 		});
 	}
 	
 	@PUT
-	@Path("/{id}/issues")
-	public Response addIssueToWorkItem(@ValidIssue Issue issue, @PathParam("id") Long id) {
+	@Path("{itemKey}/issues")
+	public Response addIssueToWorkItem(@ValidIssue IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			WorkItem workItem = service.getById(id);
+			WorkItem workItem = service.getByItemKey(itemKey);
 			if (workItem != null) {
-				service.addIssueToWorkItem(issue, workItem);
+				service.addIssueToWorkItem(issueDTO.getItemKey(), workItem);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();
@@ -96,12 +106,12 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 	
 	@DELETE
-	@Path("/{id}/issues")
-	public Response removeIssueFromWorkItem(@ValidIssue Issue issue, @PathParam("id") Long id) {
+	@Path("{itemKey}/issues")
+	public Response removeIssueFromWorkItem(@ValidIssue IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			WorkItem workItem = service.getById(id);
+			WorkItem workItem = service.getByItemKey(itemKey);
 			if (workItem != null) {
-				service.removeIssueFromWorkItem(issue, workItem);
+				service.removeIssueFromWorkItem(issueDTO.getItemKey(), workItem);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();

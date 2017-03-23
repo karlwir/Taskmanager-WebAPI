@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import se.kawi.taskmanagerservicelib.model.User;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.service.UserService;
+import se.kawi.taskmanagerwebapi.model.UserDTO;
+import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 import se.kawi.taskmanagerwebapi.resource.query.UserQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidUser;
@@ -36,14 +38,14 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@POST
-	public Response createUser(@ValidUserNew User entity) {
-		return super.create(entity);
+	public Response createUser(@ValidUserNew UserDTO userDTO) {
+		return super.create(userDTO.buildUser());
 	}
 
 	@GET
-	@Path("/{id}")
-	public Response getUser(@PathParam("id") Long id) {
-		return super.byId(id);
+	@Path("/{itemKey}")
+	public Response getUser(@PathParam("itemKey") String itemKey) {
+		return super.byItemKey(itemKey);
 	}
 
 	@GET
@@ -58,24 +60,32 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@PUT
-	public Response updateUser(@ValidUser User entity) {
-		return super.update(entity);
+	public Response updateUser(@ValidUser UserDTO userDTO) {
+		return serviceRequest(() -> {
+			User user = service.getByItemKey(userDTO.getItemKey());
+			if (user != null ) {
+				service.save(userDTO.reflectDTO(user));
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
 	}
 
 	@DELETE
-	public Response deleteUser(@ValidUser User entity) {
-		return super.delete(entity);
+	public Response deleteUser(@ValidUser UserDTO userDTO) {
+		return super.delete(userDTO);
 	}
 	
 	@GET
-	@Path("/{id}/workitems")
-	public Response getuserWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("id") Long id) {
+	@Path("/{itemKey}/workitems")
+	public Response getuserWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			User user = service.getById(id);
+			User user = service.getByItemKey(itemKey);
 			if (user != null) {
 				workItemQuery.setUser(user);
 				List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
-				return Response.ok().entity(userWorkItems).build();
+				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems)).build();
 			} else {
 				return Response.status(404).build();
 			}
@@ -83,12 +93,12 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 	
 	@PUT
-	@Path("/{id}/workitems")
-	public Response assignWorkItem(@ValidWorkItem WorkItem workItem, @PathParam("id") Long id) {
+	@Path("/{itemKey}/workitems")
+	public Response assignWorkItem(@ValidWorkItem WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			User user = service.getById(id);
+			User user = service.getByItemKey(itemKey);
 			if (user != null) {
-				service.assignWorkItem(workItem, user);
+				service.assignWorkItem(workItemDTO.getItemKey(), user);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();
@@ -97,12 +107,12 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 	
 	@DELETE
-	@Path("/{id}/workitems")
-	public Response withdrawWorkItem(@ValidWorkItem WorkItem workItem, @PathParam("id") Long id) {
+	@Path("/{itemKey}/workitems")
+	public Response withdrawWorkItem(@ValidWorkItem WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
-			User user = service.getById(id);
+			User user = service.getByItemKey(itemKey);
 			if (user != null) {
-				service.withdrawWorkItem(workItem, user);
+				service.withdrawWorkItem(workItemDTO.getItemKey(), user);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();

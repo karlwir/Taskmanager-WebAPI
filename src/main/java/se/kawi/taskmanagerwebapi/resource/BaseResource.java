@@ -3,9 +3,9 @@ package se.kawi.taskmanagerwebapi.resource;
 import java.net.URI;
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.ws.rs.core.UriInfo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,9 +16,15 @@ import se.kawi.taskmanagerservicelib.service.ServiceException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import se.kawi.taskmanagerwebapi.model.AbstractDTO;
+import se.kawi.taskmanagerwebapi.model.DTOFactory;;
+
 abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?>> {
 
 	protected final S service;
+	
+	@Autowired
+	protected DTOFactory<E> dtoFactory;
 
 	@Context
 	protected UriInfo uriInfo;
@@ -36,25 +42,29 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		}
 	}
 
-	protected Response create(@Valid E entity) {
+	protected Response create(E entity) {
 		return serviceRequest(() -> {
 			E savedEntity = service.save(entity);
-			URI location = uriInfo.getAbsolutePathBuilder().path("{id}").resolveTemplate("id", savedEntity.getId()).build();
+			URI location = uriInfo.getAbsolutePathBuilder().path("{itemKey}").resolveTemplate("itemKey", savedEntity.getItemKey()).build();
 			return Response.created(location).build();
 		});
 	}
 
-	protected Response byId(Long id) {
+	protected Response byItemKey(String itemKey) {
 		return serviceRequest(() -> {
-			E entity = service.getById(id);
-			return entity == null ? Response.status(404).build() : Response.ok(entity).build();
+			E entity = service.getByItemKey(itemKey);
+			if (entity != null) {
+				return Response.ok().entity(dtoFactory.buildDTO(entity)).build();
+			} else {
+				return Response.status(404).build();
+			}
 		});
 	}
 	
 	protected Response get(Specification<E> spec, Pageable pageable) {
 		return serviceRequest(() -> {
 			List<E> entities = service.query(spec, pageable);
-			return Response.ok().entity(entities).build();
+			return Response.ok().entity(dtoFactory.buildDTO(entities)).build();
 		});
 	}
 
@@ -65,19 +75,15 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		});		
 	}
 	
-	protected Response update(@Valid E entity) {
+	protected Response delete(AbstractDTO abstractDTO) {
 		return serviceRequest(() -> {
-			service.save(entity);
-			return Response.noContent().build();
+			E entity = service.getByItemKey(abstractDTO.getItemKey());
+			if (entity != null) {
+				service.delete(entity);
+				return Response.noContent().build();
+			}
+			return Response.status(404).build();
 		});
 	}
-
-	protected Response delete(@Valid E entity) {
-		return serviceRequest(() -> {
-			service.delete(entity);
-			return Response.noContent().build();
-		});
-	}
-
 
 }

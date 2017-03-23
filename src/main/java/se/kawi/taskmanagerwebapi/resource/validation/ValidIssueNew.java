@@ -15,7 +15,7 @@ import se.kawi.taskmanagerservicelib.model.Issue;
 
 public @interface ValidIssueNew {
 	
-    String message() default "Invalid work item";
+    String message() default "Invalid issue";
 	
     Class<?>[] groups() default {};
     
@@ -30,9 +30,7 @@ public @interface ValidIssueNew {
 		public boolean isValid(Issue issue, ConstraintValidatorContext context) {
 			return issue != null &&
 				   issue.getTitle() != null &&
-				   issue.getDescription() != null && 
-				   issue.getWorkItem() != null &&
-				   issue.getWorkItem().getId() != null;
+				   issue.getDescription() != null;
 		}
     }
 }

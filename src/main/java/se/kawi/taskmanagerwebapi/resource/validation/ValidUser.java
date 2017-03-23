@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import se.kawi.taskmanagerservicelib.model.User;
+import se.kawi.taskmanagerwebapi.model.UserDTO;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidUser.Validator.class)
@@ -21,18 +21,19 @@ public @interface ValidUser {
     
     Class<? extends Payload>[] payload() default {};
     
-	public class Validator implements ConstraintValidator<ValidUser, User> {
+	public class Validator implements ConstraintValidator<ValidUser, UserDTO> {
 
 		@Override
 		public void initialize(ValidUser constraintAnnotation) {}
 
 		@Override
-		public boolean isValid(User user, ConstraintValidatorContext context) {
-			return user != null &&
-				   user.getId() != null && 
-				   user.getFirstname() != null && 
-				   user.getLastname() != null && 
-				   user.getUsername() != null;
+		public boolean isValid(UserDTO userDTO, ConstraintValidatorContext context) {
+			return userDTO != null &&
+				   userDTO.getItemKey().length() == 36 &&
+				   userDTO.getFirstname() != null && 
+				   userDTO.getLastname() != null && 
+				   userDTO.getUsername() != null &&
+				   (userDTO.isActiveUser() || !userDTO.isActiveUser());
 		}
 		
     }

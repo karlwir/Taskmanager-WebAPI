@@ -8,14 +8,14 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan({"se.kawi.taskmanagerservicelib","se.kawi.taskmanagerwebapi"})
-public class TaskmanagerApplication extends SpringBootServletInitializer {
+public class TaskmanagerWebAPI extends SpringBootServletInitializer {
 
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(TaskmanagerApplication.class);
+        return application.sources(TaskmanagerWebAPI.class);
     }
 	
 	public static void main(String[] args) {
-		SpringApplication.run(TaskmanagerApplication.class, args);
+		SpringApplication.run(TaskmanagerWebAPI.class, args);
 	}
 }

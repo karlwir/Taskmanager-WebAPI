@@ -1,11 +1,10 @@
 package se.kawi.taskmanagerwebapi.model;
 
-import java.util.Set;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import se.kawi.taskmanagerservicelib.model.Issue;
-import se.kawi.taskmanagerservicelib.model.User;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.model.WorkItem.Status;
 
@@ -18,18 +17,19 @@ public class WorkItemDTO extends AbstractDTO {
 	@JsonProperty
 	private Status status;
 	@JsonProperty
-	private Set<User> users;
+	@JsonIgnoreProperties(value = {"workItems",  "teams"})
+	private List<UserDTO> users;
 	@JsonProperty
-	private Set<Issue> issues;
+	@JsonIgnoreProperties(value = {"workItem"})
+	private List<IssueDTO> issues;
 
 	protected WorkItemDTO() {}
 	
 	protected WorkItemDTO(WorkItem workItem) {
+		this.itemKey = workItem.getItemKey();
 		this.title = workItem.getTitle();
 		this.description = workItem.getDescription();
 		this.status = workItem.getStatus();
-		this.users = workItem.getUsers();
-		this.issues = workItem.getIssues();
 	}
 	
 	public WorkItem reflectDTO(WorkItem workItem) {
@@ -53,5 +53,13 @@ public class WorkItemDTO extends AbstractDTO {
 
 	public Status getStatus() {
 		return status;
+	}
+	
+	public void setUsers(List<UserDTO> users) {
+		this.users = users;
+	}
+	
+	public void setIssues(List<IssueDTO> issues) {
+		this.issues = issues;
 	}
 }

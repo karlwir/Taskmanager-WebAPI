@@ -85,7 +85,7 @@ public class UserResource extends BaseResource<User, UserService> {
 			if (user != null) {
 				workItemQuery.setUser(user);
 				List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
-				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems)).build();
+				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems, true)).build();
 			} else {
 				return Response.status(404).build();
 			}

@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import se.kawi.taskmanagerservicelib.model.WorkItem;
+import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidWorkItemNew.Validator.class)
@@ -21,17 +21,16 @@ public @interface ValidWorkItemNew {
     
     Class<? extends Payload>[] payload() default {};
     
-	public class Validator implements ConstraintValidator<ValidWorkItemNew, WorkItem> {
+	public class Validator implements ConstraintValidator<ValidWorkItemNew, WorkItemDTO> {
 
 		@Override
 		public void initialize(ValidWorkItemNew constraintAnnotation) {}
 
 		@Override
-		public boolean isValid(WorkItem workItem, ConstraintValidatorContext context) {
-			return workItem != null &&
-				   workItem.getId() != null &&
-				   workItem.getTitle() != null &&
-				   workItem.getDescription() != null;
+		public boolean isValid(WorkItemDTO workItemDTO, ConstraintValidatorContext context) {
+			return workItemDTO != null &&
+				   workItemDTO.getTitle() != null &&
+				   workItemDTO.getDescription() != null;
 		}
     }
 }

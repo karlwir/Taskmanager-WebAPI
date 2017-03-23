@@ -85,7 +85,7 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 			if (workItem != null) {
 				issueQuery.setWorkItem(workItem);
 				List<Issue> workItemsIssues = service.getWorkItemIssues(issueQuery.buildSpecification(), issueQuery.buildPageable());
-				return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues)).build();
+				return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues, false)).build();
 			}
 			return Response.status(404).build();
 		});
@@ -120,17 +120,3 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

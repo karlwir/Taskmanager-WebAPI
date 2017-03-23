@@ -1,12 +1,11 @@
 package se.kawi.taskmanagerwebapi.model;
 
-import java.util.Set;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import se.kawi.taskmanagerservicelib.model.Team;
 import se.kawi.taskmanagerservicelib.model.User;
-import se.kawi.taskmanagerservicelib.model.WorkItem;
 
 public class UserDTO extends AbstractDTO {
 
@@ -19,9 +18,11 @@ public class UserDTO extends AbstractDTO {
 	@JsonProperty
 	private boolean activeUser;
 	@JsonProperty
-	private Set<Team> teams;
+	@JsonIgnoreProperties(value = "users")
+	private List<TeamDTO> teams;
 	@JsonProperty
-	private Set<WorkItem> workItems;
+	@JsonIgnoreProperties(value = {"users", "issues"})
+	private List<WorkItemDTO> workItems;
 	
 	protected UserDTO() {}
 
@@ -31,8 +32,6 @@ public class UserDTO extends AbstractDTO {
 		this.firstname = user.getFirstname();
 		this.lastname = user.getLastname();
 		this.activeUser = user.isActiveUser();
-		this.teams = user.getTeams();
-		this.workItems = user.getWorkItems();
 	}
 
 	public User reflectDTO(User user) {
@@ -60,6 +59,14 @@ public class UserDTO extends AbstractDTO {
 
 	public boolean isActiveUser() {
 		return activeUser;
+	}
+	
+	public void setTeamDTOs(List<TeamDTO> teams) {
+		this.teams = teams;
+	}
+
+	public void setWorkItemDTOs(List<WorkItemDTO> workItems) {
+		this.workItems = workItems;
 	}
 	
 }

@@ -28,7 +28,9 @@ public @interface ValidTeam {
 		@Override
 		public boolean isValid(TeamDTO teamDTO, ConstraintValidatorContext context) {
 			return teamDTO != null &&
+				   teamDTO.getItemKey() != null && 
 				   teamDTO.getItemKey().length() == 36 &&
+				   teamDTO.getItemKey().substring(0, 4).equals("b2db") &&
 				   teamDTO.getTeamName() != null;
 		}
     }

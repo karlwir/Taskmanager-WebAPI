@@ -87,7 +87,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 			if (team != null) {
 				userQuery.setTeam(team);
 				List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
-				return Response.ok().entity(dtoFactory.buildUserDTOs(teamMembers)).build();
+				return Response.ok().entity(dtoFactory.buildUserDTOs(teamMembers, true)).build();
 			} else {
 				return Response.status(404).build();
 			}
@@ -130,7 +130,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 			if (team != null) {
 				workItemQuery.setUsers(team.getUsers());
 				List<WorkItem> teamWorkItems = service.getTeamWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
-				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(teamWorkItems)).build();
+				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(teamWorkItems, true)).build();
 			}
 			return Response.status(404).build();
 		});

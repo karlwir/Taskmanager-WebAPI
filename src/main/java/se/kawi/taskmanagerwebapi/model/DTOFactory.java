@@ -1,6 +1,7 @@
 package se.kawi.taskmanagerwebapi.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -16,48 +17,94 @@ public class DTOFactory<E extends AbstractEntity> {
 
 	public AbstractDTO buildDTO(E entity) {
 		if (entity.getClass().equals(User.class)) {
-			return new UserDTO((User) entity);
+			User user = (User) entity;
+			return buildUserDTO(user, true);
 		}
 		if (entity.getClass().equals(WorkItem.class)) {
-			return new WorkItemDTO((WorkItem) entity);
+			WorkItem workItem = (WorkItem) entity;
+			return buildWorkItemDTO(workItem, true);
 		}
 		if (entity.getClass().equals(Team.class)) {
-			return new TeamDTO((Team) entity);
+			Team team = (Team) entity;
+			return buildTeamDTO(team, true);
 		}
 		if (entity.getClass().equals(Issue.class)) {
-			return new IssueDTO((Issue) entity);
+			Issue issue = (Issue) entity;
+			return buildIssueDTO(issue, true);
 		}
 		return null;
 	}
 	
-	public List<AbstractDTO> buildDTO(List<E> entities) {
+	public List<AbstractDTO> buildDTO(Collection<E> entities) {
 		List<AbstractDTO> dtoList = new ArrayList<>();
 		for (E entity : entities) {
 			dtoList.add(buildDTO(entity));
 		} 
 		return dtoList;
 	}
-
-	public List<WorkItemDTO> buildWorkItemDTOs(List<WorkItem> workItems) {
-		List<WorkItemDTO> dtoList = new ArrayList<>();
-		for (WorkItem workItem : workItems) {
-			dtoList.add(new WorkItemDTO(workItem));
-		} 
-		return dtoList;
+	
+	public UserDTO buildUserDTO(User user, boolean withChilds) {
+		UserDTO userDTO = new UserDTO(user);
+		if (withChilds) {
+			userDTO.setTeamDTOs(buildTeamDTOs(user.getTeams(), false));
+			userDTO.setWorkItemDTOs(buildWorkItemDTOs(user.getWorkItems(), false));
+		}
+		return userDTO;
 	}
-
-	public List<IssueDTO> buildIssuesDTOs(List<Issue> issues) {
-		List<IssueDTO> dtoList = new ArrayList<>();
-		for (Issue issue : issues) {
-			dtoList.add(new IssueDTO(issue));
-		} 
-		return dtoList;
+	
+	public WorkItemDTO buildWorkItemDTO(WorkItem workItem, boolean withChilds) {
+		WorkItemDTO workItemDTO = new WorkItemDTO(workItem);
+		if (withChilds) {
+			workItemDTO.setUsers(buildUserDTOs(workItem.getUsers(), false));
+			workItemDTO.setIssues(buildIssuesDTOs(workItem.getIssues(), false));
+		}
+		return workItemDTO;
 	}
-
-	public List<UserDTO> buildUserDTOs(List<User> users) {
+	
+	public TeamDTO buildTeamDTO(Team team, boolean withChilds) {
+		TeamDTO teamDTO = new TeamDTO(team);
+		if (withChilds) {
+			teamDTO.setUserDTOs(buildUserDTOs(team.getUsers(), false));
+		}
+		return teamDTO;
+	}
+	
+	public IssueDTO buildIssueDTO(Issue issue, boolean withChilds) {
+		IssueDTO issueDTO = new IssueDTO(issue);
+		if(withChilds && issue.getWorkItem() != null) {
+			issueDTO.setWorkItem(new WorkItemDTO(issue.getWorkItem()));				
+		}
+		return issueDTO;
+	}
+	
+	public List<UserDTO> buildUserDTOs(Collection<User> users, boolean withChilds) {
 		List<UserDTO> dtoList = new ArrayList<>();
 		for (User user : users) {
-			dtoList.add(new UserDTO(user));
+			dtoList.add(buildUserDTO(user, withChilds));
+		} 
+		return dtoList;
+	}
+	
+	public List<WorkItemDTO> buildWorkItemDTOs(Collection<WorkItem> workItems, boolean withChilds) {
+		List<WorkItemDTO> dtoList = new ArrayList<>();
+		for (WorkItem workItem : workItems) {
+			dtoList.add(buildWorkItemDTO(workItem, withChilds));
+		} 
+		return dtoList;
+	}
+	
+	public List<TeamDTO> buildTeamDTOs(Collection<Team> teams, boolean withChilds) {
+		List<TeamDTO> dtoList = new ArrayList<>();
+		for(Team team : teams) {
+			dtoList.add(buildTeamDTO(team, withChilds));
+		}
+		return dtoList;
+	}
+	
+	public List<IssueDTO> buildIssuesDTOs(Collection<Issue> issues, boolean withChilds) {
+		List<IssueDTO> dtoList = new ArrayList<>();
+		for (Issue issue : issues) {
+			dtoList.add(buildIssueDTO(issue, withChilds));
 		} 
 		return dtoList;
 	}

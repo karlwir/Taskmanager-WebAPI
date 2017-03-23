@@ -1,10 +1,13 @@
 package se.kawi.taskmanagerwebapi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import se.kawi.taskmanagerservicelib.model.Issue;
-import se.kawi.taskmanagerservicelib.model.WorkItem;
 
+@JsonInclude(Include.NON_NULL)
 public class IssueDTO extends AbstractDTO {
 
 	@JsonProperty
@@ -14,15 +17,16 @@ public class IssueDTO extends AbstractDTO {
 	@JsonProperty
 	private boolean openIssue;
 	@JsonProperty
-	private WorkItem workItem;
+	@JsonIgnoreProperties(value={"issues", "users"})
+	private WorkItemDTO workItem;
 
 	protected IssueDTO() {};
 	
 	protected IssueDTO(Issue issue) {
+		this.itemKey = issue.getItemKey();
 		this.title = issue.getTitle();
 		this.description = issue.getDescription();
 		this.openIssue = issue.isOpenIssue();
-		this.workItem = issue.getWorkItem();
 	}
 	
 	public Issue reflectDTO(Issue issue) {
@@ -35,7 +39,7 @@ public class IssueDTO extends AbstractDTO {
 	public Issue buildIssue() {
 		return new Issue(null, title, description);
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -46,6 +50,10 @@ public class IssueDTO extends AbstractDTO {
 	
 	public boolean isOpenIssue() {
 		return openIssue;
+	}
+	
+	public void setWorkItem(WorkItemDTO workItem) {
+		this.workItem = workItem;
 	}
 	
 }

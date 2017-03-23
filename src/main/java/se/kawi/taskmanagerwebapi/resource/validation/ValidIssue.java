@@ -29,7 +29,9 @@ public @interface ValidIssue {
 		@Override
 		public boolean isValid(IssueDTO issueDTO, ConstraintValidatorContext context) {
 			return issueDTO != null &&
+				   issueDTO.getItemKey() != null &&
 				   issueDTO.getItemKey().length() == 36 &&
+				   issueDTO.getItemKey().substring(0, 4).equals("b2da") &&
 				   issueDTO.getTitle() != null &&
 				   issueDTO.getDescription() != null &&
 				   (issueDTO.isOpenIssue() || !issueDTO.isOpenIssue());

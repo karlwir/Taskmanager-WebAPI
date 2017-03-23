@@ -29,7 +29,9 @@ public @interface ValidUser {
 		@Override
 		public boolean isValid(UserDTO userDTO, ConstraintValidatorContext context) {
 			return userDTO != null &&
+				   userDTO.getItemKey() != null &&
 				   userDTO.getItemKey().length() == 36 &&
+				   userDTO.getItemKey().substring(0, 4).equals("b2dc") &&
 				   userDTO.getFirstname() != null && 
 				   userDTO.getLastname() != null && 
 				   userDTO.getUsername() != null &&

@@ -29,9 +29,12 @@ public @interface ValidWorkItem {
 		@Override
 		public boolean isValid(WorkItemDTO workItemDTO, ConstraintValidatorContext context) {
 			return workItemDTO != null &&
+				   workItemDTO.getItemKey() != null &&
 				   workItemDTO.getItemKey().length() == 36 &&
+				   workItemDTO.getItemKey().substring(0, 4).equals("b2dd") &&
 				   workItemDTO.getTitle() != null &&
-				   workItemDTO.getDescription() != null;
+				   workItemDTO.getDescription() != null &&
+				   workItemDTO.getStatus() != null;
 		}
     }
 }

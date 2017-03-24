@@ -17,7 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import se.kawi.taskmanagerwebapi.model.AbstractDTO;
-import se.kawi.taskmanagerwebapi.model.DTOFactory;;
+import se.kawi.taskmanagerwebapi.model.DTOFactory;
 
 abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?>> {
 
@@ -45,7 +45,7 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response create(E entity) {
 		return serviceRequest(() -> {
 			E savedEntity = service.save(entity);
-			URI location = uriInfo.getAbsolutePathBuilder().path("{itemKey}").resolveTemplate("itemKey", savedEntity.getItemKey()).build();
+			URI location = uriInfo.getAbsolutePathBuilder().path(savedEntity.getItemKey()).build();
 			return Response.created(location).build();
 		});
 	}

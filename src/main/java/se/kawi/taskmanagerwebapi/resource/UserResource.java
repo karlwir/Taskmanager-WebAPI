@@ -12,20 +12,22 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanagerservicelib.model.User;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
-import se.kawi.taskmanagerservicelib.service.UserService;
 import se.kawi.taskmanagerwebapi.model.UserDTO;
 import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
+import se.kawi.taskmanagerservicelib.service.UserService;
 import se.kawi.taskmanagerwebapi.resource.query.UserQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidUser;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidUserNew;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItem;
+import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItemNew;
 
 @Component
 @Path("/users")
@@ -90,6 +92,21 @@ public class UserResource extends BaseResource<User, UserService> {
 				return Response.status(404).build();
 			}
 		});	
+	}
+	
+	@POST
+	@Path("/{itemKey}/workitems")
+	public Response assignNewWorkItem(@ValidWorkItemNew WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
+		return serviceRequest(() -> {
+			User user = service.getByItemKey(itemKey);
+			if (user != null) {
+				WorkItem workItem = service.assignNewWorkItem(workItemDTO.buildWorkItem(), user);
+				URI location = uriInfo.getBaseUriBuilder().path(WorkItemResource.class).path(workItem.getItemKey()).build();
+				return Response.created(location).build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
 	}
 	
 	@PUT

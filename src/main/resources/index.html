@@ -7,7 +7,7 @@
         
         <style>
             .list-inline-item {margin-bottom: 10px;}
-            pre {background-color: #f7f7f9; color: #bd4147;}
+            pre.code {background-color: #f7f7f9; color: #bd4147;}
         </style>
     </head>
     <body data-bind="css: { 'popup-open': quoteUpdateCopy }">
@@ -26,7 +26,7 @@
                         </div>
                         <div class="card-block">
                             <h4 class="card-title">Get users</h4>
-                            <p class="card-text">Endpoint for getting users</p>
+                            <p class="card-text">Endpoint to get list of users</p>
                             <strong>QueryParams:</strong> 
                             <p class="card-text">
                                 <ul class="list-inline">
@@ -38,9 +38,9 @@
                                 </ul>
                                 <ul class="list-inline">
                                     <small>
-                                        <li class="list-inline-item"><code class="text-info">sort=<em>asc/desc</em></code></li>
-                                        <li class="list-inline-item"><code class="text-info">page=<em>&lt;paginate&gt;</em></code></li>
-                                        <li class="list-inline-item"><code class="text-info">pagesize=<em>&lt;pagesize&gt;</em></code></li>
+                                        <li class="list-inline-item"><code>sort=<em>asc/desc</em></code></li>
+                                        <li class="list-inline-item"><code>page=<em>&lt;paginate&gt;</em></code></li>
+                                        <li class="list-inline-item"><code>pagesize=<em>&lt;pagesize&gt;</em></code></li>
                                     </small>
                                 </ul>
                             </p>
@@ -52,10 +52,10 @@
                         </div>
                         <div class="card-block">
                             <h4 class="card-title">Create user</h4>
-                            <p class="card-text">Endpoint for creating a new user.</p>
+                            <p class="card-text">Endpoint to create a new user</p>
                             <strong>JSON:</strong> Required fields are username, firstname and lastname
                             <p class="card-text">
-                                <pre>
+                                <pre class="code">
                                     <code>
     {
         "username": "anca01",
@@ -72,17 +72,39 @@
                         </div>
                         <div class="card-block">
                             <h4 class="card-title">Update user</h4>
-                            <p class="card-text">Endpoint for updating a user</p>
+                            <p class="card-text">Endpoint to update a user</p>
                             <strong>JSON:</strong> Required fields are itemKey, username, firstname, lastname and active
                             <p class="card-text">
-                                <pre>
+                                <pre class="code">
                                     <code>
     {
         "itemKey": "b2dcb7d9-f66f-41e0-937b-97bb2f0ed165",
         "username": "anca01",
         "firstname": "Anders",
         "lastname": "Carlsson",
-        "activeUser": true
+        "active": true
+    }</code>
+                                </pre>
+                            </p>
+                        </div>
+                    </div>       
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @DELETE
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Delete user</h4>
+                            <p class="card-text">Endpoint to delete a user</p>
+                            <strong>JSON:</strong> Required fields are itemKey, username, firstname, lastname and active
+                            <p class="card-text">
+                                <pre class="code">
+                                    <code>
+    {
+        "itemKey": "b2dcb7d9-f66f-41e0-937b-97bb2f0ed165",
+        "username": "anca01",
+        "firstname": "Anders",
+        "lastname": "Carlsson",
+        "active": true
     }</code>
                                 </pre>
                             </p>
@@ -94,9 +116,49 @@
                 </div>
                       
                 <div class="col-md-12 mb-5">
-                    <h2 class="mb-3 text-muted">/workitems</h2>
+                    <h2 class="mb-3 text-muted">/users/{itemKey}</h2>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @GET
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Get user</h4>
+                            <p class="card-text">Endpoint to get one user</p>
+                            
+                        </div>
+                    </div>   
                 </div>    
-                      
+                <div class="col-md-12 mb-5">
+                    <h2 class="mb-3 text-muted">/users/{itemKey}/workitems</h2>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @GET
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Get users work items</h4>
+                            <p class="card-text">Endpoint to get a list with a users work items</p>
+                            
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @POST
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Create new work item and assign to user</h4>
+                            <p class="card-text">Endpoint to create a new work item and assigning it directly to user</p>
+                            <strong>JSON:</strong> Required fields are title and description
+                            <p class="card-text">
+                                <pre class="code">
+                                    <code>
+    {
+        "title": "A short and concise title",
+        "description": "A long and verbose description"
+    }</code>
+                                </pre>
+                        </div>
+                    </div>   
+                </div>    
                 <div class="col-md-12 mb-5">
                     <h2 class="mb-3 text-muted">/issues</h2>
                 </div>

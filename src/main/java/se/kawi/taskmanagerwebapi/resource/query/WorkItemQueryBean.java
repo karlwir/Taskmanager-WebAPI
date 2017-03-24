@@ -9,6 +9,7 @@ import javax.persistence.criteria.Predicate;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanagerservicelib.model.User;
@@ -32,6 +33,13 @@ public class WorkItemQueryBean extends BaseQueryBean {
 	
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+	
+	@Override
+	public Pageable buildPageable() {
+		possibleSortArray = new String[]{"title", "description", "status"};
+		defaultSortArray = new String[]{"title"};
+		return super.buildPageable();
 	}
 
 	public Specification<WorkItem> buildSpecification() {

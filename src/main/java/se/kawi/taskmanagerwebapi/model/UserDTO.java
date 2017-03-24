@@ -16,7 +16,7 @@ public class UserDTO extends AbstractDTO {
 	@JsonProperty
 	private String lastname;
 	@JsonProperty
-	private boolean activeUser;
+	private Boolean active;
 	@JsonProperty
 	@JsonIgnoreProperties(value = "users")
 	private List<TeamDTO> teams;
@@ -31,13 +31,13 @@ public class UserDTO extends AbstractDTO {
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();
 		this.lastname = user.getLastname();
-		this.activeUser = user.isActiveUser();
+		this.active = user.isActiveUser();
 	}
 
 	public User reflectDTO(User user) {
 		user.setFirstName(this.firstname);
 		user.setLastName(this.lastname);
-		user.setActiveUser(this.activeUser);
+		user.setActiveUser(this.active);
 		return user;
 	}
 	
@@ -57,8 +57,8 @@ public class UserDTO extends AbstractDTO {
 		return lastname;
 	}
 
-	public boolean isActiveUser() {
-		return activeUser;
+	public Boolean isActive() {
+		return active;
 	}
 	
 	public void setTeamDTOs(List<TeamDTO> teams) {

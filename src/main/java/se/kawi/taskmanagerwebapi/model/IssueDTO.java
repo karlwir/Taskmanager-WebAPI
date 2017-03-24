@@ -15,7 +15,7 @@ public class IssueDTO extends AbstractDTO {
 	@JsonProperty
 	private String description;
 	@JsonProperty
-	private boolean openIssue;
+	private Boolean openIssue;
 	@JsonProperty
 	@JsonIgnoreProperties(value={"issues", "users"})
 	private WorkItemDTO workItem;
@@ -48,7 +48,7 @@ public class IssueDTO extends AbstractDTO {
 		return description;
 	}
 	
-	public boolean isOpenIssue() {
+	public Boolean isOpenIssue() {
 		return openIssue;
 	}
 	

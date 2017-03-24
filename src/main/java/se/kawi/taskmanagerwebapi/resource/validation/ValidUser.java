@@ -35,7 +35,7 @@ public @interface ValidUser {
 				   userDTO.getFirstname() != null && 
 				   userDTO.getLastname() != null && 
 				   userDTO.getUsername() != null &&
-				   (userDTO.isActiveUser() || !userDTO.isActiveUser());
+				   userDTO.isActive() != null;
 		}
 		
     }

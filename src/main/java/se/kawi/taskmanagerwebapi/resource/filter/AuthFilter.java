@@ -13,9 +13,9 @@ public class AuthFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		if (requestContext.getHeaders().get("api-key") == null || !requestContext.getHeaders().get("api-key").contains("secretkey")) {
-			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity("Api-key must be defined.").build());
-		}
+//		if (requestContext.getHeaders().get("api-key") == null || !requestContext.getHeaders().get("api-key").contains("secretkey")) {
+//			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity("Api-key must be defined.").build());
+//		}
 	}
 
 }

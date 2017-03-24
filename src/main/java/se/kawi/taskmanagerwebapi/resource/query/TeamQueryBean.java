@@ -7,6 +7,7 @@ import javax.persistence.criteria.Predicate;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanagerservicelib.model.Team;
@@ -14,18 +15,25 @@ import se.kawi.taskmanagerservicelib.model.Team_;
 
 public class TeamQueryBean extends BaseQueryBean {
 
-	@QueryParam("name") @DefaultValue("") private String teamName;
-	@QueryParam("active") @DefaultValue("true") private String activeTeam;
+	@QueryParam("name") @DefaultValue("") private String name;
+	@QueryParam("active") @DefaultValue("true") private String active;
+	
+	@Override
+	public Pageable buildPageable() {
+		possibleSortArray = new String[]{"name", "active"};
+		defaultSortArray = new String[]{"name"};
+		return super.buildPageable();
+	}
 
 	public Specification<Team> buildSpecification() {
 		return (root, query, cb) -> {
 			List<Predicate> predicates = new ArrayList<>();
 			
-			if (!teamName.equals("")) {
-				predicates.add(cb.like(root.get(Team_.teamName), "%" + teamName + "%"));
+			if (!name.equals("")) {
+				predicates.add(cb.like(root.get(Team_.name), "%" + name + "%"));
 			}
-			if (activeTeam.toLowerCase().equals("true") || activeTeam.toLowerCase().equals("false")) {
-				predicates.add(cb.equal(root.get(Team_.activeTeam), Boolean.parseBoolean(activeTeam)));
+			if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {
+				predicates.add(cb.equal(root.get(Team_.active), Boolean.parseBoolean(active)));
 			}
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
 		};

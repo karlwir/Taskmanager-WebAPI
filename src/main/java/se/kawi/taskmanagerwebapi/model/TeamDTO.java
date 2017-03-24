@@ -10,9 +10,9 @@ import se.kawi.taskmanagerservicelib.model.Team;
 public class TeamDTO extends AbstractDTO {
 
 	@JsonProperty
-	private String teamName;
+	private String name;
 	@JsonProperty
-	private boolean activeTeam;
+	private Boolean active;
 	@JsonProperty
 	@JsonIgnoreProperties(value = {"teams", "workItems"})
 	private List<UserDTO> users;
@@ -21,26 +21,26 @@ public class TeamDTO extends AbstractDTO {
 	
 	public TeamDTO(Team team) {
 		this.itemKey = team.getItemKey();
-		this.teamName = team.getTeamName();
-		this.activeTeam = team.isActiveTeam();
+		this.name = team.getName();
+		this.active = team.isActive();
 	}
 	
 	public Team reflectDTO(Team team) {
-		team.setTeamName(teamName);
-		team.setActiveTeam(activeTeam);
+		team.setName(name);
+		team.setActive(active);
 		return team;
 	}
 	
 	public Team buildTeam() {
-		return new Team(teamName);
+		return new Team(name);
 	}
 	
-	public String getTeamName() {
-		return teamName;
+	public String getName() {
+		return name;
 	}
 	
-	public boolean isActiveTeam() {
-		return activeTeam;
+	public Boolean isActive() {
+		return active;
 	}
 	
 	public void setUserDTOs(List<UserDTO> users) {

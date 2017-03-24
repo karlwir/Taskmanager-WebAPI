@@ -7,6 +7,7 @@ import javax.persistence.criteria.Predicate;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanagerservicelib.model.Team;
@@ -18,14 +19,22 @@ public class UserQueryBean extends BaseQueryBean {
 	@QueryParam("firstname") @DefaultValue("") private String firstname;
 	@QueryParam("lastname") @DefaultValue("") private String lastname;
 	@QueryParam("username") @DefaultValue("") private String username;
-	@QueryParam("active") @DefaultValue("") private String activeUser;
+	@QueryParam("active") @DefaultValue("") private String active;
 	
-	private Team team;
 	
-	public void setTeam(Team team) {
-		this.team = team;
+	private Team teams;
+	
+	public void setTeam(Team teams) {
+		this.teams = teams;
 	}
-
+	
+	@Override
+	public Pageable buildPageable() {
+		possibleSortArray = new String[]{"firstname", "lastname", "username", "active"};
+		defaultSortArray = new String[]{"lastname", "firstname"};
+		return super.buildPageable();
+	}
+	
 	public Specification<User> buildSpecification() {
 		return (root, query, cb) -> {
 			List<Predicate> predicates = new ArrayList<>();
@@ -39,11 +48,11 @@ public class UserQueryBean extends BaseQueryBean {
 			if (!username.equals("")) {
 				predicates.add(cb.equal(root.get(User_.username), username));
 			}
-			if (activeUser.toLowerCase().equals("true") || activeUser.toLowerCase().equals("false")) {
-				predicates.add(cb.equal(root.get(User_.activeUser), Boolean.parseBoolean(activeUser)));
+			if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {
+				predicates.add(cb.equal(root.get(User_.active), Boolean.parseBoolean(active)));
 			}
-			if (team != null) {
-				predicates.add(cb.isMember(team, root.get(User_.teams)));
+			if (teams != null) {
+				predicates.add(cb.isMember(teams, root.get(User_.teams)));
 			}
 
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));

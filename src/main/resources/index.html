@@ -1,0 +1,113 @@
+<html>
+    <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        
+        <style>
+            .list-inline-item {margin-bottom: 10px;}
+            pre {background-color: #f7f7f9; color: #bd4147;}
+        </style>
+    </head>
+    <body data-bind="css: { 'popup-open': quoteUpdateCopy }">
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3">The Taskmanager API</h1>
+            </div>
+        </div>
+        <div class="container mb-5">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+                    <h2 class="mb-3 text-muted">/users</h2>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @GET
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Get users</h4>
+                            <p class="card-text">Endpoint for getting users</p>
+                            <strong>QueryParams:</strong> 
+                            <p class="card-text">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item"><code>firstname=<em>&lt;firstname&gt;</em></code></li>
+                                    <li class="list-inline-item"><code>lastname=<em>&lt;lastname&gt;</em></code></li>
+                                    <li class="list-inline-item"><code>username=<em>&lt;username&gt;</em></code></li>
+                                    <li class="list-inline-item"><code>active=<em>true/false</em></code></li>
+                                    <li class="list-inline-item"><code>sortby=<em>firstname,lastname,username,active</em></code></li>
+                                </ul>
+                                <ul class="list-inline">
+                                    <small>
+                                        <li class="list-inline-item"><code class="text-info">sort=<em>asc/desc</em></code></li>
+                                        <li class="list-inline-item"><code class="text-info">page=<em>&lt;paginate&gt;</em></code></li>
+                                        <li class="list-inline-item"><code class="text-info">pagesize=<em>&lt;pagesize&gt;</em></code></li>
+                                    </small>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @POST
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Create user</h4>
+                            <p class="card-text">Endpoint for creating a new user.</p>
+                            <strong>JSON:</strong> Required fields are username, firstname and lastname
+                            <p class="card-text">
+                                <pre>
+                                    <code>
+    {
+        "username": "anca01",
+        "firstname": "Anders",
+        "lastname": "Carlsson"
+    }</code>
+                                </pre>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            @PUT
+                        </div>
+                        <div class="card-block">
+                            <h4 class="card-title">Update user</h4>
+                            <p class="card-text">Endpoint for updating a user</p>
+                            <strong>JSON:</strong> Required fields are itemKey, username, firstname, lastname and active
+                            <p class="card-text">
+                                <pre>
+                                    <code>
+    {
+        "itemKey": "b2dcb7d9-f66f-41e0-937b-97bb2f0ed165",
+        "username": "anca01",
+        "firstname": "Anders",
+        "lastname": "Carlsson",
+        "activeUser": true
+    }</code>
+                                </pre>
+                            </p>
+                        </div>
+                    </div>            
+                    
+                    
+                    
+                </div>
+                      
+                <div class="col-md-12 mb-5">
+                    <h2 class="mb-3 text-muted">/workitems</h2>
+                </div>    
+                      
+                <div class="col-md-12 mb-5">
+                    <h2 class="mb-3 text-muted">/issues</h2>
+                </div>
+                <div class="col-md-12 mb-5">
+                    <h2 class="mb-3 text-muted">/teams</h2>
+                </div>
+                
+                
+                          
+                          
+        	</div>
+		</div>
+    </body>
+</html>

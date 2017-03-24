@@ -34,7 +34,7 @@ public @interface ValidIssue {
 				   issueDTO.getItemKey().substring(0, 4).equals("b2da") &&
 				   issueDTO.getTitle() != null &&
 				   issueDTO.getDescription() != null &&
-				   (issueDTO.isOpenIssue() || !issueDTO.isOpenIssue());
+				   issueDTO.isOpenIssue() != null;
 		}
     }
 }

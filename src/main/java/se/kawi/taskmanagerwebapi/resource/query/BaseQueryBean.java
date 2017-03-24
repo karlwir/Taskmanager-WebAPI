@@ -1,6 +1,6 @@
 package se.kawi.taskmanagerwebapi.resource.query;
 
-import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,40 +14,50 @@ import org.springframework.data.domain.Sort.Direction;
 
 abstract class BaseQueryBean {
 
-	@QueryParam("size") @DefaultValue("25") private int size;
 	@QueryParam("page") @DefaultValue("0") private int page;
+	@QueryParam("pagesize") @DefaultValue("25") private int pageSize;
 	@QueryParam("sort") @DefaultValue("asc") private String sort;
-	@QueryParam("sortby") @DefaultValue("id") private String sortBy;
+	@QueryParam("sortby") private String sortBy;
+	
+	protected String[] possibleSortArray = new String[0];
+	protected String[] defaultSortArray = new String[]{"id"};
+	private String[] requestSortArray;
+	
 	
 	public Pageable buildPageable() {
+		if(sortBy != null) {
+			requestSortArray = sortBy.toLowerCase().split(",");		
+		}
 
-		String[] sortArray = new String[] {sortBy};
-		
-		if(!sortBy.equals("id")) {
-			Set<String> possibleSortSet = new LinkedHashSet<>();
-			Set<String> requestedSortSet = new LinkedHashSet<>();
+System.out.println(Arrays.toString(possibleSortArray));
+		if(requestSortArray != null) {
 			
-			Field[] possibleSortArray = this.getClass().getDeclaredFields();
-			String[] requestedSortArray = sortBy.toLowerCase().split(",");
+			Set<String> possibleSortSet = new LinkedHashSet<>();
+			Set<String> requestSortSet = new LinkedHashSet<>();
 			
 			for(int i = 0 ; i < possibleSortArray.length; i++) {
-				possibleSortSet.add(possibleSortArray[i].getName());
+				possibleSortSet.add(possibleSortArray[i]);
 			}
-
-			for(int i = 0; i < requestedSortArray.length; i++) {
-				requestedSortSet.add(requestedSortArray[i]);
+			for(int i = 0; i < requestSortArray.length; i++) {
+				requestSortSet.add(requestSortArray[i]);
 			}
-			requestedSortSet.add("id");
-			possibleSortSet.add("id");
+			requestSortSet.retainAll(possibleSortSet);
 			
-			requestedSortSet.retainAll(possibleSortSet);
-			sortArray = new String[requestedSortSet.size()];
-			requestedSortSet.toArray(sortArray);
+			if (requestSortSet.size() > 0) {
+				requestSortArray = new String[requestSortSet.size()];
+				requestSortSet.toArray(requestSortArray);
+			} else {
+				requestSortArray = defaultSortArray;
+			}
+		} else {
+			requestSortArray = defaultSortArray;
 		}
 		
+System.out.println(Arrays.toString(requestSortArray));
+
 		if(sort.toLowerCase().equals("desc")) {
-			return new PageRequest(page, size, Direction.DESC, sortArray);
+			return new PageRequest(page, pageSize, Direction.DESC, requestSortArray);
 		}
-		return new PageRequest(page, size, Direction.ASC, sortArray);
+		return new PageRequest(page, pageSize, Direction.ASC, requestSortArray);
 	}
 }

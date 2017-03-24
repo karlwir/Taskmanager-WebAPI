@@ -1,11 +1,10 @@
 package se.kawi.taskmanagerwebapi.resource.query;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.DefaultValue;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,6 @@ abstract class BaseQueryBean {
 			requestSortArray = sortBy.toLowerCase().split(",");		
 		}
 
-System.out.println(Arrays.toString(possibleSortArray));
 		if(requestSortArray != null) {
 			
 			Set<String> possibleSortSet = new LinkedHashSet<>();
@@ -53,8 +51,6 @@ System.out.println(Arrays.toString(possibleSortArray));
 			requestSortArray = defaultSortArray;
 		}
 		
-System.out.println(Arrays.toString(requestSortArray));
-
 		if(sort.toLowerCase().equals("desc")) {
 			return new PageRequest(page, pageSize, Direction.DESC, requestSortArray);
 		}

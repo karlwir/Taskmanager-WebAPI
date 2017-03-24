@@ -14,12 +14,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Path("/")
-@Produces({ MediaType.TEXT_HTML + "; charset=UTF-8" })
 public class HomeResource {
 
 	@GET
+	@Produces({ MediaType.TEXT_HTML + "; charset=UTF-8" })
 	public InputStream hello() throws IOException {
 		File file = new File("./src/main/resources/index.html");
+		return new FileInputStream(file);
+	}
+	
+	@GET
+	@Path("/docjson")
+	@Produces({ MediaType.APPLICATION_JSON + "; charset=UTF-8" })
+	public InputStream docjson() throws IOException {
+		File file = new File("./src/main/resources/docdata.json");
 		return new FileInputStream(file);
 	}
 }

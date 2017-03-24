@@ -15,7 +15,7 @@ public class IssueDTO extends AbstractDTO {
 	@JsonProperty
 	private String description;
 	@JsonProperty
-	private Boolean openIssue;
+	private Boolean open;
 	@JsonProperty
 	@JsonIgnoreProperties(value={"issues", "users"})
 	private WorkItemDTO workItem;
@@ -26,13 +26,13 @@ public class IssueDTO extends AbstractDTO {
 		this.itemKey = issue.getItemKey();
 		this.title = issue.getTitle();
 		this.description = issue.getDescription();
-		this.openIssue = issue.isOpenIssue();
+		this.open = issue.isOpen();
 	}
 	
 	public Issue reflectDTO(Issue issue) {
 		issue.setTitle(title);
 		issue.setDescription(description);
-		issue.setOpenIssue(openIssue);
+		issue.setOpen(open);
 		return issue;
 	}
 	
@@ -48,8 +48,8 @@ public class IssueDTO extends AbstractDTO {
 		return description;
 	}
 	
-	public Boolean isOpenIssue() {
-		return openIssue;
+	public Boolean isOpen() {
+		return open;
 	}
 	
 	public void setWorkItem(WorkItemDTO workItem) {

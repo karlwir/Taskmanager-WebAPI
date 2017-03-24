@@ -18,7 +18,7 @@ public class IssueQueryBean extends BaseQueryBean {
 	
 	@QueryParam("title") @DefaultValue("") private String title;
 	@QueryParam("description") @DefaultValue("") private String description;
-	@QueryParam("open") @DefaultValue("") private String openissue;
+	@QueryParam("open") @DefaultValue("") private String open;
 	
 	private WorkItem workItem;
 	
@@ -44,8 +44,8 @@ public class IssueQueryBean extends BaseQueryBean {
 			if (!description.equals("")) {
 				predicates.add(cb.like(root.get(Issue_.description), "%" + description + "%"));
 			}
-			if (openissue.toLowerCase().equals("true") || openissue.toLowerCase().equals("false")) {
-				predicates.add(cb.equal(root.get(Issue_.openIssue), Boolean.parseBoolean(openissue)));
+			if (open.toLowerCase().equals("true") || open.toLowerCase().equals("false")) {
+				predicates.add(cb.equal(root.get(Issue_.open), Boolean.parseBoolean(open)));
 			}
 			if (workItem != null) {
 				predicates.add(cb.equal(root.get(Issue_.workItem), workItem));

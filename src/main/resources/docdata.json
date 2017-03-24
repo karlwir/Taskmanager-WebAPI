@@ -1,0 +1,737 @@
+[
+    {
+        "title": "User endpoints",
+        "resource": "users",
+        "endpoints": [
+            {
+                "verb": "GET",
+                "path": null,
+                "endpoint": "/users",
+                "title": "Get users",
+                "description": "Endpoint to get list of users",
+                "warning": null,
+                "queryParams": [
+                    {
+                        "param": "firstname",
+                        "value": "<firstname>"
+                    },
+                    {
+                        "param": "lastname",
+                        "value": "<lastname>"
+                    },
+                    {
+                        "param": "username",
+                        "value": "<username>"
+                    },
+                    {
+                        "param": "active",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "firstname,lastname,username,active"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": null,
+                "endpoint": "/users",
+                "title": "Create user",
+                "description": "Endpoint to create a new user",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are username, firstname and lastname",
+                "jsonCode": "\n\t{\n\t\t\"username\": \"anca01\",\n\t\t\"firstname\": \"Anders\",\n\t\t\"lastname\": \"Carlsson\"\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": null,
+                "endpoint": "/users",
+                "title": "Update user",
+                "description": "Endpoint to update an existing user",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, username, firstname, lastname and active",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dcb7d9-f66f-41e0-937b-97bb2f0ed165\",\n\t\t\"username\": \"anca01\",\n\t\t\"firstname\": \"Anders\",\n\t\t\"lastname\": \"Carlsson\",\n\t\t\"active\": \"true\"\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": null,
+                "endpoint": "/users",
+                "title": "Delete user",
+                "description": "Endpoint to delete a user",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, username, firstname, lastname and active",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dcb7d9-f66f-41e0-937b-97bb2f0ed165\",\n\t\t\"username\": \"anca01\",\n\t\t\"firstname\": \"Anders\",\n\t\t\"lastname\": \"Carlsson\",\n\t\t\"active\": \"true\"\n\t}\n\n"
+            },
+            {
+                "verb": "GET",
+                "path": "/users",
+                "endpoint": "/count",
+                "title": "Count users",
+                "description": "Endpoint to count users",
+                "warning": null,
+                "queryParams": [
+                    {
+                        "param": "firstname",
+                        "value": "<firstname>"
+                    },
+                    {
+                        "param": "lastname",
+                        "value": "<lastname>"
+                    },
+                    {
+                        "param": "username",
+                        "value": "<username>"
+                    },
+                    {
+                        "param": "active",
+                        "value": "true/false"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/users",
+                "endpoint": "/{itemKey}",
+                "title": "Get user",
+                "description": "Endpoint to get a user by its itemKey",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/users/{itemKey}",
+                "endpoint": "/workitems",
+                "title": "Get users work items",
+                "description": "Endpoint to get a list with work items assigned to this users",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "status",
+                        "value": "UNSTARTED/STARTED/DONE/ARCHIVED"
+                    },
+                    {
+                        "param": "hasissues",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "title,description,status"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": "/users/{itemKey}",
+                "endpoint": "/workitems",
+                "title": "Create new work item and assign to user",
+                "description": "Endpoint to create a new work item and assigning it directly to this user",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are title and description",
+                "jsonCode": "\n\t{\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\",\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": "/users/{itemKey}",
+                "endpoint": "/workitems",
+                "title": "Assign work item to user",
+                "description": "Endpoint to assign an existing work item to this user",
+                "warning": "Notice that any changes to the work item is Not persisted, this endpoint only handles relation to the user",
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, title, description and status",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\",\n\t\t\"status\": \"UNSTARTED\",\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": "/users/{itemKey}",
+                "endpoint": "/workitems",
+                "title": "Withdraw work item from user",
+                "description": "Endpoint to withdraw an work item to a user.",
+                "warning": "Notice that the work item is not deleted, only withdrawn from this user",
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, title, description and status",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\",\n\t\t\"status\": \"DONE\",\n\t}\n\n"
+            }
+        ]
+    },
+    {
+        "title": "Team endpoints",
+        "resource": "teams",
+        "endpoints": [
+            {
+                "verb": "GET",
+                "path": null,
+                "endpoint": "/teams",
+                "title": "Get teams",
+                "description": "Endpoint to get list of teams",
+                "warning": null,
+                "queryParams": [
+                    {
+                        "param": "name",
+                        "value": "<name>"
+                    },
+                    {
+                        "param": "active",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "name,active"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": null,
+                "endpoint": "/teams",
+                "title": "Create team",
+                "description": "Endpoint to create a new team",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged field is name",
+                "jsonCode": "\n\t{\n\t\t\"name\": \"The A-Team\",\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": null,
+                "endpoint": "/teams",
+                "title": "Update team",
+                "description": "Endpoint to update an existing team",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, name and active",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dcb7d9-f66f-41e0-937b-97bb2f0ed165\",\n\t\t\"name\": \"The B-Team\",\n\t\t\"active\": \"true\"\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": null,
+                "endpoint": "/teams",
+                "title": "Delete teams",
+                "description": "Endpoint to delete a team",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, name and active",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dcb7d9-f66f-41e0-937b-97bb2f0ed165\",\n\t\t\"name\": \"The B-Team\",\n\t\t\"active\": \"true\"\n\t}\n\n"
+            },
+            {
+                "verb": "GET",
+                "path": "/teams",
+                "endpoint": "/count",
+                "title": "Count teams",
+                "description": "Endpoint to count teams",
+                "warning": null,
+                "queryParams": [
+                    {
+                        "param": "name",
+                        "value": "<name>"
+                    },
+                    {
+                        "param": "active",
+                        "value": "true/false"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/teams",
+                "endpoint": "/{itemKey}",
+                "title": "Get team",
+                "description": "Endpoint to get a team by its itemKey",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/teams/{itemKey}",
+                "endpoint": "/users",
+                "title": "Get teams users",
+                "description": "Endpoint to get a list with members of this team",
+                "warning": null,
+                "queryParams": [
+                    {
+                        "param": "firstname",
+                        "value": "<firstname>"
+                    },
+                    {
+                        "param": "lastname",
+                        "value": "<lastname>"
+                    },
+                    {
+                        "param": "username",
+                        "value": "<username>"
+                    },
+                    {
+                        "param": "active",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "firstname,lastname,username,active"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": "/teams/{itemKey}",
+                "endpoint": "/users",
+                "title": "TODO - Create new user and assign to team",
+                "description": "Endpoint to create a new user and assigning it directly to this team",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are username, firstname and lastname",
+                "jsonCode": "\n\t{\n\t\t\"username\": \"anca01\",\n\t\t\"firstname\": \"Anders\",\n\t\t\"lastname\": \"Carlsson\"\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": "/teams/{itemKey}",
+                "endpoint": "/users",
+                "title": "Assign user to team",
+                "description": "Endpoint to assign an existing userm to this team",
+                "warning": "Notice that any changes to the user is Not persisted, this endpoint only handles relation to the team",
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, username, firstname, lastname and active",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dcb7d9-f66f-41e0-937b-97bb2f0ed165\",\n\t\t\"username\": \"anca01\",\n\t\t\"firstname\": \"Anders\",\n\t\t\"lastname\": \"Carlsson\",\n\t\t\"active\": \"true\"\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": "/teams/{itemKey}",
+                "endpoint": "/users",
+                "title": "Remove user from team",
+                "description": "Endpoint to remove a user from a team.",
+                "warning": "Notice that the user is not deleted, only withdrawn from this team",
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, username, firstname, lastname and active",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dcb7d9-f66f-41e0-937b-97bb2f0ed165\",\n\t\t\"username\": \"anca01\",\n\t\t\"firstname\": \"Anders\",\n\t\t\"lastname\": \"Carlsson\",\n\t\t\"active\": \"true\"\n\t}\n\n"
+            },
+            {
+                "verb": "GET",
+                "path": "/teams/{itemKey}",
+                "endpoint": "/workitems",
+                "title": "Get work items related to team",
+                "description": "Endpoint to get list of work items assigned to team members",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "status",
+                        "value": "UNSTARTED/STARTED/DONE/ARCHIVED"
+                    },
+                    {
+                        "param": "hasissues",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "title,description,status"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            }
+        ]
+    },
+    {
+        "title": "Work item endpoints",
+        "resource": "workitems",
+        "endpoints": [
+             {
+                "verb": "GET",
+                "path": null,
+                "endpoint": "/workitems",
+                "title": "Get work items",
+                "description": "Endpoint to get list of work items",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "status",
+                        "value": "UNSTARTED/STARTED/DONE/ARCHIVED"
+                    },
+                    {
+                        "param": "hasissues",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "title,description,status"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": null,
+                "endpoint": "/workitems",
+                "title": "Create work item",
+                "description": "Endpoint to create a new work item",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are title and description",
+                "jsonCode": "\n\t{\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\",\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": null,
+                "endpoint": "/workitems",
+                "title": "Update work item",
+                "description": "Endpoint to update an existing work item",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, title, description and status",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A even shorter and more concise title\",\n\t\t\"description\": \"A longer and even more verbose description\",\n\t\t\"status\": \"STARTED\",\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": null,
+                "endpoint": "/workitems",
+                "title": "Delete work item",
+                "description": "Endpoint to delete an existing work item",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, title, description and status",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A long and pointless title\",\n\t\t\"description\": \"A short and meaningless description\",\n\t\t\"status\": \"ARCHIVED\",\n\t}\n\n"
+            },
+            {
+                "verb": "GET",
+                "path": "/workitems",
+                "endpoint": "/count",
+                "title": "Count work items",
+                "description": "Endpoint to count work items",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "status",
+                        "value": "UNSTARTED/STARTED/DONE/ARCHIVED"
+                    },
+                    {
+                        "param": "hasissues",
+                        "value": "true/false"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/workitems",
+                "endpoint": "/{itemKey}",
+                "title": "Get work item",
+                "description": "Endpoint to get a work item by its itemKey",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/workitems/{itemKey}",
+                "endpoint": "/issues",
+                "title": "Get work items issues",
+                "description": "Endpoint to get a list of the issues related to this work item",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "open",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "title,description,open"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": "/workitems/{itemKey}",
+                "endpoint": "/issues",
+                "title": " TODO - Create new issue and relate to work item",
+                "description": "Endpoint to create a new issue and relate it to this work item",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are title and description",
+                "jsonCode": "\n\t{\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\"\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": "/workitems/{itemKey}",
+                "endpoint": "/issues",
+                "title": "Relate issue to work item",
+                "description": "Endpoint to relate an existing issue to this work item",
+                "warning": "Notice that any changes to the issue is Not persisted, this endpoint only handles relation to work items",
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, title, description and open",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\",\n\t\t\"open\": true\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": "/users/{itemKey}",
+                "endpoint": "/workitems",
+                "title": "Withdraw work item from user",
+                "description": "Endpoint to unrelate an issue from this work item",
+                "warning": "Notice that the issue is not deleted, only unrelated from this work item",
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, title, description and open",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\",\n\t\t\"open\": false\n\t}\n\n"
+            }
+        ]
+    },
+    {
+        "title": "Issue endpoints",
+        "resource": "issues",
+        "endpoints": [
+             {
+                "verb": "GET",
+                "path": null,
+                "endpoint": "/issues",
+                "title": "Get issues",
+                "description": "Endpoint to get list of issues",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "open",
+                        "value": "true/false"
+                    },
+                    {
+                        "param": "sortby",
+                        "value": "title,description,open,workitem"
+                    },
+                    {
+                        "param": "sort",
+                        "value": "asc/desc"
+                    },
+                    {
+                        "param": "page",
+                        "value": "<pagination>"
+                    },
+                    {
+                        "param": "pagesize",
+                        "value": "<pagesize>"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "POST",
+                "path": null,
+                "endpoint": "/issues",
+                "title": "Create issue",
+                "description": "Endpoint to create a new issue",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are title and description",
+                "jsonCode": "\n\t{\n\t\t\"title\": \"A short and concise title\",\n\t\t\"description\": \"A long and verbose description\"\n\t}\n\n"
+            },
+            {
+                "verb": "PUT",
+                "path": null,
+                "endpoint": "/issues",
+                "title": "Update issue",
+                "description": "Endpoint to update an existing issue",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required and acknowledged fields are itemKey, title, description and open",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A even shorter and more concise title\",\n\t\t\"description\": \"A longer and even more verbose description\"\n\t\t\"open\": true\n\t}\n\n"
+            },
+            {
+                "verb": "DELETE",
+                "path": null,
+                "endpoint": "/issues",
+                "title": "Delete issue",
+                "description": "Endpoint to delete an existing issue",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": "Required fields are itemKey, title, description and open",
+                "jsonCode": "\n\t{\n\t\t\"itemKey\": \"b2dd248a-7936-482b-a361-769c96fe40b7\",\n\t\t\"title\": \"A long and pointless title\",\n\t\t\"description\": \"A short and meaningless description\"\n\t\t\"open\": false\n\t}\n\n"
+            },
+            {
+                "verb": "GET",
+                "path": "/issues",
+                "endpoint": "/count",
+                "title": "Count issues",
+                "description": "Endpoint to count issues",
+                "warning": null,
+                "queryParams": [
+                     {
+                        "param": "title",
+                        "value": "<title>"
+                    },
+                    {
+                        "param": "description",
+                        "value": "<description>"
+                    },
+                    {
+                        "param": "open",
+                        "value": "true/false"
+                    }
+                    ],
+                "jsonText": null,
+                "jsonCode": null
+            },
+            {
+                "verb": "GET",
+                "path": "/issues",
+                "endpoint": "/{itemKey}",
+                "title": "Get issue",
+                "description": "Endpoint to get a issue by its itemKey",
+                "warning": null,
+                "queryParams": [],
+                "jsonText": null,
+                "jsonCode": null
+            }
+        ]
+    }
+]

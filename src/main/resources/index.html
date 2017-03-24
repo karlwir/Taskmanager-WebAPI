@@ -1,175 +1,99 @@
 <html>
     <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-        
+        <title>Taskmanager API Documentation</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
         <style>
             .list-inline-item {margin-bottom: 10px;}
-            pre.code {background-color: #f7f7f9; color: #bd4147;}
+            pre.code {background-color: #f7f7f9; color: #bd4147;tab-size: 3;}
         </style>
     </head>
-    <body data-bind="css: { 'popup-open': quoteUpdateCopy }">
+    <body>
         <div class="jumbotron">
             <div class="container">
-                <h1 class="display-3">The Taskmanager API</h1>
+                <div class="col-md-12">
+                    <h1 class="display-3">Taskmanager API</h1>
+                </div>
             </div>
         </div>
-        <div class="container mb-5">
+        <div class="container mb-5" data-bind="visible: endpointCollections().length > 0">
+            <div class="row" data-bind="foreach: endpointCollections">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li><strong data-bind="text: title"></strong></li>
+                        <li>
+                            <ul data-bind="foreach: endpoints">
+                                <li><a data-bind="text: title, attr: { href: '#' + $parent.resource + $index(), title: description }"></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12 mb-5">
-                    <h2 class="mb-3 text-muted">/users</h2>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @GET
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Get users</h4>
-                            <p class="card-text">Endpoint to get list of users</p>
-                            <strong>QueryParams:</strong> 
-                            <p class="card-text">
-                                <ul class="list-inline">
-                                    <li class="list-inline-item"><code>firstname=<em>&lt;firstname&gt;</em></code></li>
-                                    <li class="list-inline-item"><code>lastname=<em>&lt;lastname&gt;</em></code></li>
-                                    <li class="list-inline-item"><code>username=<em>&lt;username&gt;</em></code></li>
-                                    <li class="list-inline-item"><code>active=<em>true/false</em></code></li>
-                                    <li class="list-inline-item"><code>sortby=<em>firstname,lastname,username,active</em></code></li>
-                                </ul>
-                                <ul class="list-inline">
-                                    <small>
-                                        <li class="list-inline-item"><code>sort=<em>asc/desc</em></code></li>
-                                        <li class="list-inline-item"><code>page=<em>&lt;paginate&gt;</em></code></li>
-                                        <li class="list-inline-item"><code>pagesize=<em>&lt;pagesize&gt;</em></code></li>
-                                    </small>
-                                </ul>
-                            </p>
-                        </div>
+                    <div data-bind="foreach: endpointCollections">
+                        <hr class="mb-5 mt-5">
+                        <h2 class="display-4 mb-4" data-bind="text: title"></h2>
+                        <div data-bind="foreach: endpoints">
+                            <div class="card mb-4" data-bind="attr: { id: $parent.resource + $index(), title: description }">
+                                <div class="card-header">
+                                    <h5><span class="badge badge-default" data-bind="text: '@' + verb, css: { 
+                                            'badge-success' : verb == 'GET', 
+                                            'badge-info' : verb == 'POST', 
+                                            'badge-warning' : verb == 'PUT',
+                                            'badge-danger' : verb == 'DELETE'}"></span></h5>
+                                <span class="text-muted" data-bind="text: path"></span><span class="text-primary" data-bind="text: endpoint"></span>
+                                </div>
+                                <div class="card-block">
+                                    <h4 class="card-title" data-bind="text: title"></h4>
+                                    <p class="card-text" data-bind="text: description"></p>
+                                    <p class="card-text text-warning" data-bind="text: warning, visible: warning"></p>
+                                    <p class="card-text" data-bind="visible: queryParams.length > 0">
+                                        <strong>QueryParams</strong> 
+                                        <ul class="list-inline" data-bind="foreach: queryParams">
+                                            <li class="list-inline-item"><code><span data-bind="text: param"></span>=<em data-bind="text: value"></em></code></li>
+                                        </ul>
+                                    </p>
+                                    <div  data-bind="visible: jsonText">
+                                        <p class="card-text">
+                                            <strong>JSON: </strong>
+                                            <span data-bind="text: jsonText"></span>
+                                            <pre class="code"><code data-bind="text: jsonCode"></code></pre>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>         
                     </div>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @POST
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Create user</h4>
-                            <p class="card-text">Endpoint to create a new user</p>
-                            <strong>JSON:</strong> Required fields are username, firstname and lastname
-                            <p class="card-text">
-                                <pre class="code">
-                                    <code>
-    {
-        "username": "anca01",
-        "firstname": "Anders",
-        "lastname": "Carlsson"
-    }</code>
-                                </pre>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @PUT
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Update user</h4>
-                            <p class="card-text">Endpoint to update a user</p>
-                            <strong>JSON:</strong> Required fields are itemKey, username, firstname, lastname and active
-                            <p class="card-text">
-                                <pre class="code">
-                                    <code>
-    {
-        "itemKey": "b2dcb7d9-f66f-41e0-937b-97bb2f0ed165",
-        "username": "anca01",
-        "firstname": "Anders",
-        "lastname": "Carlsson",
-        "active": true
-    }</code>
-                                </pre>
-                            </p>
-                        </div>
-                    </div>       
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @DELETE
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Delete user</h4>
-                            <p class="card-text">Endpoint to delete a user</p>
-                            <strong>JSON:</strong> Required fields are itemKey, username, firstname, lastname and active
-                            <p class="card-text">
-                                <pre class="code">
-                                    <code>
-    {
-        "itemKey": "b2dcb7d9-f66f-41e0-937b-97bb2f0ed165",
-        "username": "anca01",
-        "firstname": "Anders",
-        "lastname": "Carlsson",
-        "active": true
-    }</code>
-                                </pre>
-                            </p>
-                        </div>
-                    </div>            
-                    
-                    
-                    
                 </div>
-                      
-                <div class="col-md-12 mb-5">
-                    <h2 class="mb-3 text-muted">/users/{itemKey}</h2>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @GET
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Get user</h4>
-                            <p class="card-text">Endpoint to get one user</p>
-                            
-                        </div>
-                    </div>   
-                </div>    
-                <div class="col-md-12 mb-5">
-                    <h2 class="mb-3 text-muted">/users/{itemKey}/workitems</h2>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @GET
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Get users work items</h4>
-                            <p class="card-text">Endpoint to get a list with a users work items</p>
-                            
-                        </div>
-                    </div>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            @POST
-                        </div>
-                        <div class="card-block">
-                            <h4 class="card-title">Create new work item and assign to user</h4>
-                            <p class="card-text">Endpoint to create a new work item and assigning it directly to user</p>
-                            <strong>JSON:</strong> Required fields are title and description
-                            <p class="card-text">
-                                <pre class="code">
-                                    <code>
-    {
-        "title": "A short and concise title",
-        "description": "A long and verbose description"
-    }</code>
-                                </pre>
-                        </div>
-                    </div>   
-                </div>    
-                <div class="col-md-12 mb-5">
-                    <h2 class="mb-3 text-muted">/issues</h2>
-                </div>
-                <div class="col-md-12 mb-5">
-                    <h2 class="mb-3 text-muted">/teams</h2>
-                </div>
-                
-                
-                          
-                          
-        	</div>
+            </div>                  
 		</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
+        <script>
+            function EndpointCollection(data) {
+                var self = this;
+                    self.title = data.title;
+                    self.resource = data.resource;
+                    self.endpoints = data.endpoints;
+            }
+
+
+			function EndpointsDocViewModel() {
+                var self = this;
+
+                self.endpointCollections = ko.observableArray([]);
+                
+                var DATA_HOST = "/docjson";
+    
+                $.getJSON(DATA_HOST, function(allData) {
+                    var mappedEndpointCollections = $.map(allData, function(endpointCollectionData) { 
+                        return new EndpointCollection(endpointCollectionData) 
+                    });
+                    self.endpointCollections(mappedEndpointCollections);
+                });
+            }
+            
+            ko.applyBindings(new EndpointsDocViewModel());
+        </script>
     </body>
 </html>

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.data.domain.Pageable;
@@ -15,8 +14,8 @@ import se.kawi.taskmanagerservicelib.model.Team_;
 
 public class TeamQueryBean extends BaseQueryBean {
 
-	@QueryParam("name") @DefaultValue("") private String name;
-	@QueryParam("active") @DefaultValue("true") private String active;
+	@QueryParam("name") private String name;
+	@QueryParam("active") private String active;
 	
 	@Override
 	public Pageable buildPageable() {
@@ -32,8 +31,10 @@ public class TeamQueryBean extends BaseQueryBean {
 			if (!name.equals("")) {
 				predicates.add(cb.like(root.get(Team_.name), "%" + name + "%"));
 			}
-			if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {
-				predicates.add(cb.equal(root.get(Team_.active), Boolean.parseBoolean(active)));
+			if (active != null) {
+				if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {
+					predicates.add(cb.equal(root.get(Team_.active), Boolean.parseBoolean(active)));
+				}
 			}
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
 		};

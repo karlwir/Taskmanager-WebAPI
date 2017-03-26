@@ -3,9 +3,8 @@ package se.kawi.taskmanagerwebapi.resource.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.Predicate;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
+import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,10 +15,10 @@ import se.kawi.taskmanagerservicelib.model.User_;
 
 public class UserQueryBean extends BaseQueryBean {
 	
-	@QueryParam("firstname") @DefaultValue("") private String firstname;
-	@QueryParam("lastname") @DefaultValue("") private String lastname;
-	@QueryParam("username") @DefaultValue("") private String username;
-	@QueryParam("active") @DefaultValue("") private String active;
+	@QueryParam("firstname") private String firstname;
+	@QueryParam("lastname") private String lastname;
+	@QueryParam("username") private String username;
+	@QueryParam("active") private String active;
 	
 	
 	private Team teams;
@@ -39,17 +38,19 @@ public class UserQueryBean extends BaseQueryBean {
 		return (root, query, cb) -> {
 			List<Predicate> predicates = new ArrayList<>();
 
-			if (!firstname.equals("")) {
+			if (firstname != null) {
 				predicates.add(cb.like(root.get(User_.firstname), "%" + firstname + "%"));
 			}
-			if (!lastname.equals("")) {
+			if (lastname != null) {
 				predicates.add(cb.like(root.get(User_.lastname), "%" + lastname + "%"));
 			}
-			if (!username.equals("")) {
+			if (username != null) {
 				predicates.add(cb.equal(root.get(User_.username), username));
 			}
-			if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {
-				predicates.add(cb.equal(root.get(User_.active), Boolean.parseBoolean(active)));
+			if (active != null) {
+				if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {
+					predicates.add(cb.equal(root.get(User_.active), Boolean.parseBoolean(active)));
+				}
 			}
 			if (teams != null) {
 				predicates.add(cb.isMember(teams, root.get(User_.teams)));

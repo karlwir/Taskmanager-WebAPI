@@ -29,7 +29,6 @@ abstract class BaseQueryBean {
 		}
 
 		if(requestSortArray != null) {
-			
 			Set<String> possibleSortSet = new LinkedHashSet<>();
 			Set<String> requestSortSet = new LinkedHashSet<>();
 			

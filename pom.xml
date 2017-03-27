@@ -26,8 +26,8 @@
 
 	<repositories>
 		<repository>
-			<id>se.kawi</id>
-			<name>kawi</name>
+        <id>project.local</id>
+        <name>project</name>
 			<url>file:${project.basedir}/repo</url>
 		</repository>
 	</repositories>

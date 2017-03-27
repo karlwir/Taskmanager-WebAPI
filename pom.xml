@@ -68,13 +68,12 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
+			
 		<dependency>
 		    <groupId>com.github.karlwir</groupId>
 		    <artifactId>Taskmanager-ServiceLib</artifactId>
-    	<version>-SNAPSHOT</version>
-	</dependency>
-		
+		    <version>-40ed2dc3cb-1</version>
+		</dependency>
 	<!-- 
 		<dependency>
 			<groupId>se.kawi</groupId>

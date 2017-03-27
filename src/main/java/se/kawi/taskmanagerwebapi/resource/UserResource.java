@@ -50,7 +50,7 @@ public class UserResource extends BaseResource<User, UserService> {
 		return super.byItemKey(itemKey);
 	}
 
-	@GET
+	@GET	
 	public Response getUsers(@BeanParam UserQueryBean userQuery) {
 		return super.get(userQuery.buildSpecification(), userQuery.buildPageable());
 	}

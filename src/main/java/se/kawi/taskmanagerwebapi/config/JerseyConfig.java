@@ -3,6 +3,8 @@ package se.kawi.taskmanagerwebapi.config;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 
+import se.kawi.taskmanagerwebapi.exception.BadRequestException;
+import se.kawi.taskmanagerwebapi.exception.NotFoundException;
 import se.kawi.taskmanagerwebapi.resource.HomeResource;
 import se.kawi.taskmanagerwebapi.resource.IssueResource;
 import se.kawi.taskmanagerwebapi.resource.TeamResource;
@@ -21,5 +23,7 @@ public class JerseyConfig extends ResourceConfig {
         register(WorkItemResource.class);
         register(CorsFilter.class);
         register(AuthFilter.class);
+        register(BadRequestException.class);
+        register(NotFoundException.class);
     }
 }

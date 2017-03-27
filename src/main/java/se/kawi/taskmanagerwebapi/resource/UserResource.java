@@ -50,11 +50,11 @@ public class UserResource extends BaseResource<User, UserService> {
 		return super.byItemKey(itemKey);
 	}
 
-	@GET	
+	@GET
 	public Response getUsers(@BeanParam UserQueryBean userQuery) {
 		return super.get(userQuery.buildSpecification(), userQuery.buildPageable());
 	}
-	
+
 	@GET
 	@Path("/count")
 	public Response countUsers(@BeanParam UserQueryBean userQuery) {
@@ -65,12 +65,8 @@ public class UserResource extends BaseResource<User, UserService> {
 	public Response updateUser(@ValidUser UserDTO userDTO) {
 		return serviceRequest(() -> {
 			User user = service.getByItemKey(userDTO.getItemKey());
-			if (user != null ) {
-				service.save(userDTO.reflectDTO(user));
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
+			service.save(userDTO.reflectDTO(user));
+			return Response.noContent().build();
 		});
 	}
 
@@ -78,63 +74,48 @@ public class UserResource extends BaseResource<User, UserService> {
 	public Response deleteUser(@ValidUser UserDTO userDTO) {
 		return super.delete(userDTO);
 	}
-	
+
 	@GET
 	@Path("/{itemKey}/workitems")
 	public Response getuserWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			User user = service.getByItemKey(itemKey);
-			if (user != null) {
-				workItemQuery.setUser(user);
-				List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
-				return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems, true)).build();
-			} else {
-				return Response.status(404).build();
-			}
-		});	
+			workItemQuery.setUser(user);
+			List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(),
+					workItemQuery.buildPageable());
+			return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems, true)).build();
+		});
 	}
-	
+
 	@POST
 	@Path("/{itemKey}/workitems")
 	public Response assignNewWorkItem(@ValidWorkItemNew WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			User user = service.getByItemKey(itemKey);
-			if (user != null) {
-				WorkItem workItem = service.assignNewWorkItem(workItemDTO.buildWorkItem(), user);
-				URI location = uriInfo.getBaseUriBuilder().path(WorkItemResource.class).path(workItem.getItemKey()).build();
-				return Response.created(location).build();
-			} else {
-				return Response.status(404).build();
-			}
+			WorkItem workItem = service.assignNewWorkItem(workItemDTO.buildWorkItem(), user);
+			URI location = uriInfo.getBaseUriBuilder().path(WorkItemResource.class).path(workItem.getItemKey()).build();
+			return Response.created(location).build();
 		});
 	}
-	
+
 	@PUT
 	@Path("/{itemKey}/workitems")
 	public Response assignWorkItem(@ValidWorkItem WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			User user = service.getByItemKey(itemKey);
-			if (user != null) {
-				service.assignWorkItem(workItemDTO.getItemKey(), user);
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
+			service.assignWorkItem(workItemDTO.getItemKey(), user);
+			return Response.noContent().build();
 		});
 	}
-	
+
 	@DELETE
 	@Path("/{itemKey}/workitems")
 	public Response withdrawWorkItem(@ValidWorkItem WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			User user = service.getByItemKey(itemKey);
-			if (user != null) {
-				service.withdrawWorkItem(workItemDTO.getItemKey(), user);
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
-		});		
+			service.withdrawWorkItem(workItemDTO.getItemKey(), user);
+			return Response.noContent().build();
+		});
 	}
 
 }

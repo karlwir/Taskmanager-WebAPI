@@ -59,13 +59,8 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	public Response updateIssue(@ValidIssue IssueDTO issueDTO) {
 		return serviceRequest(() -> {
 			Issue issue = service.getByItemKey(issueDTO.getItemKey());
-			if (issue != null) {
-				service.save(issueDTO.reflectDTO(issue));
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
-			
+			service.save(issueDTO.reflectDTO(issue));
+			return Response.noContent().build();
 		});
 	}
 

@@ -11,11 +11,17 @@ import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanagerservicelib.model.AbstractEntity;
 import se.kawi.taskmanagerservicelib.service.BaseService;
+import se.kawi.taskmanagerservicelib.service.ServiceDataFormatException;
+import se.kawi.taskmanagerservicelib.service.ServiceDataSourceException;
+import se.kawi.taskmanagerservicelib.service.ServiceEntityNotFoundException;
 import se.kawi.taskmanagerservicelib.service.ServiceException;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import se.kawi.taskmanagerwebapi.exception.BadRequestException;
+import se.kawi.taskmanagerwebapi.exception.NotFoundException;
 import se.kawi.taskmanagerwebapi.model.AbstractDTO;
 import se.kawi.taskmanagerwebapi.model.DTOFactory;
 
@@ -36,9 +42,14 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response serviceRequest(ServiceRequest serviceRequest) {
 		try {
 			return serviceRequest.request();
+		} catch (ServiceDataFormatException e) {
+			throw new BadRequestException(e.getMessage());
+		} catch (ServiceEntityNotFoundException e) {
+			throw new NotFoundException(e.getMessage());
+		} catch (ServiceDataSourceException e) {
+			throw new WebApplicationException(500);
 		} catch (ServiceException e) {
-			e.printStackTrace();
-			throw e.getWebApplicationException();
+			throw new WebApplicationException(500);
 		}
 	}
 
@@ -53,11 +64,7 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response byItemKey(String itemKey) {
 		return serviceRequest(() -> {
 			E entity = service.getByItemKey(itemKey);
-			if (entity != null) {
-				return Response.ok().entity(dtoFactory.buildDTO(entity)).build();
-			} else {
-				return Response.status(404).build();
-			}
+			return Response.ok().entity(dtoFactory.buildDTO(entity)).build();
 		});
 	}
 	
@@ -78,11 +85,8 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response delete(AbstractDTO abstractDTO) {
 		return serviceRequest(() -> {
 			E entity = service.getByItemKey(abstractDTO.getItemKey());
-			if (entity != null) {
-				service.delete(entity);
-				return Response.noContent().build();
-			}
-			return Response.status(404).build();
+			service.delete(entity);
+			return Response.noContent().build();
 		});
 	}
 

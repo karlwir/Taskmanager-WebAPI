@@ -63,12 +63,8 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	public Response updateWorkItem(@ValidWorkItem WorkItemDTO workItemDTO) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getByItemKey(workItemDTO.getItemKey());
-			if (workItem != null) {
-				service.save(workItemDTO.reflectDTO(workItem));
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
+			service.save(workItemDTO.reflectDTO(workItem));
+			return Response.noContent().build();
 		});
 	}
 
@@ -82,12 +78,9 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	public Response getWorkItemIssues(@BeanParam IssueQueryBean issueQuery, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getByItemKey(itemKey);
-			if (workItem != null) {
-				issueQuery.setWorkItem(workItem);
-				List<Issue> workItemsIssues = service.getWorkItemIssues(issueQuery.buildSpecification(), issueQuery.buildPageable());
-				return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues, false)).build();
-			}
-			return Response.status(404).build();
+			issueQuery.setWorkItem(workItem);
+			List<Issue> workItemsIssues = service.getWorkItemIssues(issueQuery.buildSpecification(), issueQuery.buildPageable());
+			return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues, false)).build();
 		});
 	}
 	
@@ -96,12 +89,8 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	public Response addIssueToWorkItem(@ValidIssue IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getByItemKey(itemKey);
-			if (workItem != null) {
-				service.addIssueToWorkItem(issueDTO.getItemKey(), workItem);
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
+			service.addIssueToWorkItem(issueDTO.getItemKey(), workItem);
+			return Response.noContent().build();
 		});
 	}
 	
@@ -110,12 +99,8 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	public Response removeIssueFromWorkItem(@ValidIssue IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getByItemKey(itemKey);
-			if (workItem != null) {
-				service.removeIssueFromWorkItem(issueDTO.getItemKey(), workItem);
-				return Response.noContent().build();
-			} else {
-				return Response.status(404).build();
-			}
+			service.removeIssueFromWorkItem(issueDTO.getItemKey(), workItem);
+			return Response.noContent().build();
 		});
 	}
 

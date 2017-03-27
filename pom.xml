@@ -26,9 +26,8 @@
 
 	<repositories>
 		<repository>
-        <id>project.local</id>
-        <name>project</name>
-			<url>file:${project.basedir}/repo</url>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
@@ -71,10 +70,18 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>com.github.karlwir</groupId>
+		    <artifactId>Taskmanager-ServiceLib</artifactId>
+    	<version>-SNAPSHOT</version>
+	</dependency>
+		
+	<!-- 
+		<dependency>
 			<groupId>se.kawi</groupId>
 			<artifactId>Taskmanager-servicelib</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+	 -->	
 	</dependencies>
 
 	<build>

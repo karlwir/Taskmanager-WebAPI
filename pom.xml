@@ -72,8 +72,8 @@
 		<dependency>
 		    <groupId>com.github.karlwir</groupId>
 		    <artifactId>Taskmanager-ServiceLib</artifactId>
-    	<version>-SNAPSHOT</version>
-	</dependency>
+		    <version>1afbb06627</version>
+		</dependency>
 		
 	<!-- 
 		<dependency>

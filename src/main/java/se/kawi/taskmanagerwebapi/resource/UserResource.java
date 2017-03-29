@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanagerservicelib.model.User;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
+import se.kawi.taskmanagerwebapi.exception.BadRequestException;
 import se.kawi.taskmanagerwebapi.model.UserDTO;
 import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 import se.kawi.taskmanagerservicelib.service.UserService;
@@ -62,17 +63,24 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@PUT
-	public Response updateUser(@ValidUser UserDTO userDTO) {
-		return serviceRequest(() -> {
-			User user = service.getByItemKey(userDTO.getItemKey());
-			service.save(userDTO.reflectDTO(user));
-			return Response.noContent().build();
-		});
+	@Path("/{itemKey}")
+	public Response updateUser(@PathParam("itemKey") String itemKey, @ValidUser UserDTO userDTO) {
+		if (itemKey.equals(userDTO.getItemKey())) {
+			return serviceRequest(() -> {
+				User user = service.getByItemKey(userDTO.getItemKey());
+				service.save(userDTO.reflectDTO(user));
+				return Response.noContent().build();
+			});
+		}
+		else {
+			throw new BadRequestException("Item key in JSON dont match item key in url");
+		}
 	}
 
 	@DELETE
-	public Response deleteUser(@ValidUser UserDTO userDTO) {
-		return super.delete(userDTO);
+	@Path("/{itemKey}")
+	public Response deleteUser(@PathParam("itemKey") String itemKey, @ValidUser UserDTO userDTO) {
+		return super.delete(itemKey, userDTO);
 	}
 
 	@GET

@@ -64,14 +64,20 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response byItemKey(String itemKey) {
 		return serviceRequest(() -> {
 			E entity = service.getByItemKey(itemKey);
-			return Response.ok().entity(dtoFactory.buildDTO(entity)).build();
+			AbstractDTO dto = dtoFactory.buildDTO(entity);
+			dto.setOrigin(uriInfo.getAbsolutePathBuilder().build());
+			return Response.ok().entity(dto).build();
 		});
 	}
 	
 	protected Response get(Specification<E> spec, Pageable pageable) {
 		return serviceRequest(() -> {
 			List<E> entities = service.query(spec, pageable);
-			return Response.ok().entity(dtoFactory.buildDTO(entities)).build();
+			List<AbstractDTO> dtos = dtoFactory.buildDTO(entities);
+			for(AbstractDTO dto : dtos) {
+				dto.setOrigin(uriInfo.getAbsolutePathBuilder().path(dto.getItemKey()).build());
+			}
+			return Response.ok().entity(dtos).build();
 		});
 	}
 
@@ -82,12 +88,16 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		});		
 	}
 	
-	protected Response delete(AbstractDTO abstractDTO) {
-		return serviceRequest(() -> {
-			E entity = service.getByItemKey(abstractDTO.getItemKey());
-			service.delete(entity);
-			return Response.noContent().build();
-		});
+	protected Response delete(String itemKey, AbstractDTO abstractDTO) {
+		if (itemKey.equals(abstractDTO.getItemKey())) {
+			return serviceRequest(() -> {
+				E entity = service.getByItemKey(abstractDTO.getItemKey());
+				service.delete(entity);
+				return Response.noContent().build();
+			});
+		} else {
+			throw new BadRequestException("Item key in JSON dont match item key in url");
+		}
 	}
 
 }

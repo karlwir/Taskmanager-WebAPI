@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import se.kawi.taskmanagerservicelib.model.Issue;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.service.WorkItemService;
+import se.kawi.taskmanagerwebapi.exception.BadRequestException;
 import se.kawi.taskmanagerwebapi.model.IssueDTO;
 import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 import se.kawi.taskmanagerwebapi.resource.query.IssueQueryBean;
@@ -60,17 +61,24 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@PUT
-	public Response updateWorkItem(@ValidWorkItem WorkItemDTO workItemDTO) {
-		return serviceRequest(() -> {
-			WorkItem workItem = service.getByItemKey(workItemDTO.getItemKey());
-			service.save(workItemDTO.reflectDTO(workItem));
-			return Response.noContent().build();
-		});
+	@Path("/{itemKey}")
+	public Response updateWorkItem(@PathParam("itemKey") String itemKey, @ValidWorkItem WorkItemDTO workItemDTO) {
+		if (itemKey.equals(workItemDTO.getItemKey())) {
+			return serviceRequest(() -> {
+				WorkItem workItem = service.getByItemKey(workItemDTO.getItemKey());
+				service.save(workItemDTO.reflectDTO(workItem));
+				return Response.noContent().build();
+			});
+		}
+		else {
+			throw new BadRequestException("Item key in JSON dont match item key in url");
+		}
 	}
-
+	
 	@DELETE
-	public Response deleteWorkItem(@ValidWorkItem WorkItemDTO workItemDTO) {
-		return super.delete(workItemDTO);
+	@Path("/{itemKey}")
+	public Response deleteWorkItem(@PathParam("itemKey") String itemKey, @ValidWorkItem WorkItemDTO workItemDTO) {
+		return super.delete(itemKey, workItemDTO);
 	}
 	
 	@GET

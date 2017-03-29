@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanagerservicelib.model.Issue;
 import se.kawi.taskmanagerservicelib.service.IssueService;
+import se.kawi.taskmanagerwebapi.exception.BadRequestException;
 import se.kawi.taskmanagerwebapi.model.IssueDTO;
 import se.kawi.taskmanagerwebapi.resource.query.IssueQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidIssue;
@@ -56,17 +57,24 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@PUT
-	public Response updateIssue(@ValidIssue IssueDTO issueDTO) {
-		return serviceRequest(() -> {
-			Issue issue = service.getByItemKey(issueDTO.getItemKey());
-			service.save(issueDTO.reflectDTO(issue));
-			return Response.noContent().build();
-		});
+	@Path("/{itemKey}")
+	public Response updateIssue(@PathParam("itemKey") String itemKey, @ValidIssue IssueDTO issueDTO) {
+		if (itemKey.equals(issueDTO.getItemKey())) {
+			return serviceRequest(() -> {
+				Issue issue = service.getByItemKey(issueDTO.getItemKey());
+				service.save(issueDTO.reflectDTO(issue));
+				return Response.noContent().build();
+			});
+		}
+		else {
+			throw new BadRequestException("Item key in JSON dont match item key in url");
+		}
 	}
 
 	@DELETE
-	public Response deleteIssue(@ValidIssue IssueDTO issueDTO) {
-		return super.delete(issueDTO);
+	@Path("/{itemKey}")
+	public Response deleteIssue(@PathParam("itemKey") String itemKey, @ValidIssue IssueDTO issueDTO) {
+		return super.delete(itemKey, issueDTO);
 	}
 
 }

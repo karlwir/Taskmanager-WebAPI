@@ -20,6 +20,7 @@ import se.kawi.taskmanagerservicelib.model.Team;
 import se.kawi.taskmanagerservicelib.model.User;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.service.TeamService;
+import se.kawi.taskmanagerwebapi.exception.BadRequestException;
 import se.kawi.taskmanagerwebapi.model.TeamDTO;
 import se.kawi.taskmanagerwebapi.model.UserDTO;
 import se.kawi.taskmanagerwebapi.resource.query.TeamQueryBean;
@@ -62,17 +63,24 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@PUT
-	public Response updateTeam(@ValidTeam TeamDTO teamDTO) {
-		return serviceRequest(() -> {
-			Team team = service.getByItemKey(teamDTO.getItemKey());
-			service.save(teamDTO.reflectDTO(team));
-			return Response.noContent().build();
-		});
+	@Path("/{itemKey}")
+	public Response updateTeam(@PathParam("itemKey") String itemKey, @ValidTeam TeamDTO teamDTO) {
+		if (itemKey.equals(teamDTO.getItemKey())) {
+			return serviceRequest(() -> {
+				Team team = service.getByItemKey(teamDTO.getItemKey());
+				service.save(teamDTO.reflectDTO(team));
+				return Response.noContent().build();
+			});
+		}
+		else {
+			throw new BadRequestException("Item key in JSON dont match item key in url");
+		}
 	}
 
 	@DELETE
-	public Response deleteTeam(@ValidTeam TeamDTO teamDTO) {
-		return super.delete(teamDTO);
+	@Path("/{itemKey}")
+	public Response deleteTeam(@PathParam("itemKey") String itemKey, @ValidTeam TeamDTO teamDTO) {
+		return super.delete(itemKey, teamDTO);
 	}
 
 	@GET

@@ -69,19 +69,20 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		
-	<!-- 
 		<dependency>
 		    <groupId>com.github.karlwir</groupId>
 		    <artifactId>Taskmanager-ServiceLib</artifactId>
-		    <version>1afbb06627</version>
+		    <version>510d5e0946</version>
 		</dependency>
-	 -->	
+	<!-- 
 		
 		<dependency>
 			<groupId>se.kawi</groupId>
 			<artifactId>Taskmanager-servicelib</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+	 -->	
 	 
 	</dependencies>
 

@@ -20,7 +20,7 @@ public class TeamDTO extends AbstractDTO {
 	protected TeamDTO() {}
 	
 	public TeamDTO(Team team) {
-		this.itemKey = team.getItemKey();
+		super(team);
 		this.name = team.getName();
 		this.active = team.isActive();
 	}

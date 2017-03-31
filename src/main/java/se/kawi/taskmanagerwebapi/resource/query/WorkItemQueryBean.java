@@ -36,7 +36,7 @@ public class WorkItemQueryBean extends BaseQueryBean {
 	
 	@Override
 	public Pageable buildPageable() {
-		possibleSortArray = new String[]{"title", "description", "status"};
+		possibleSortArray = new String[]{"title", "description", "status, updateDate"};
 		defaultSortArray = new String[]{"title"};
 		return super.buildPageable();
 	}

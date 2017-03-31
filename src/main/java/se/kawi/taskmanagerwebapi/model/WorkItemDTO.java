@@ -26,7 +26,7 @@ public class WorkItemDTO extends AbstractDTO {
 	protected WorkItemDTO() {}
 	
 	protected WorkItemDTO(WorkItem workItem) {
-		this.itemKey = workItem.getItemKey();
+		super(workItem);
 		this.title = workItem.getTitle();
 		this.description = workItem.getDescription();
 		this.status = workItem.getStatus();

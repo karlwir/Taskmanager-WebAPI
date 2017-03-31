@@ -27,7 +27,7 @@ public class UserDTO extends AbstractDTO {
 	protected UserDTO() {}
 
 	protected UserDTO(User user) {
-		this.itemKey = user.getItemKey();
+		super(user);
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();
 		this.lastname = user.getLastname();

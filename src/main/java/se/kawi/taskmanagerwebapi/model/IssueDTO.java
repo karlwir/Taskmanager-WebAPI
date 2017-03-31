@@ -20,10 +20,10 @@ public class IssueDTO extends AbstractDTO {
 	@JsonIgnoreProperties(value={"issues", "users"})
 	private WorkItemDTO workItem;
 
-	protected IssueDTO() {};
+	protected IssueDTO() {}
 	
 	protected IssueDTO(Issue issue) {
-		this.itemKey = issue.getItemKey();
+		super(issue);
 		this.title = issue.getTitle();
 		this.description = issue.getDescription();
 		this.open = issue.isOpen();

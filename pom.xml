@@ -72,7 +72,7 @@
 		<dependency>
 		    <groupId>com.github.karlwir</groupId>
 		    <artifactId>Taskmanager-ServiceLib</artifactId>
-		    <version>d0286ccdcb</version>
+		    <version>dda7ba3008</version>
 		</dependency>
 		
 	<!-- 		

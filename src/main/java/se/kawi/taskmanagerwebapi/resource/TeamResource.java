@@ -90,7 +90,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 			Team team = service.getByItemKey(itemKey);
 			userQuery.setTeam(team);
 			List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
-			return Response.ok().entity(dtoFactory.buildUserDTOs(teamMembers, true)).build();
+			return Response.ok().entity(dtoFactory.buildUserDTOs(teamMembers, true, uriInfo)).build();
 		});
 	}
 
@@ -121,7 +121,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 			Team team = service.getByItemKey(itemKey);
 			workItemQuery.setUsers(team.getUsers());
 			List<WorkItem> teamWorkItems = service.getTeamWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
-			return Response.ok().entity(dtoFactory.buildWorkItemDTOs(teamWorkItems, true)).build();
+			return Response.ok().entity(dtoFactory.buildWorkItemDTOs(teamWorkItems, true, uriInfo)).build();
 		});
 	}
 

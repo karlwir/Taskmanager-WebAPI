@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 import se.kawi.taskmanagerwebapi.resource.query.IssueQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidIssue;
+import se.kawi.taskmanagerwebapi.resource.validation.ValidIssueNew;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItem;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItemNew;
 
@@ -88,7 +90,18 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 			WorkItem workItem = service.getByItemKey(itemKey);
 			issueQuery.setWorkItem(workItem);
 			List<Issue> workItemsIssues = service.getWorkItemIssues(issueQuery.buildSpecification(), issueQuery.buildPageable());
-			return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues, false)).build();
+			return Response.ok().entity(dtoFactory.buildIssuesDTOs(workItemsIssues, false, uriInfo)).build();
+		});
+	}
+	
+	@POST
+	@Path("{itemKey}/issues")
+	public Response addNewIssueToWorkItem(@ValidIssueNew IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
+		return serviceRequest(() -> {
+			WorkItem workItem = service.getByItemKey(itemKey);
+			Issue issue = service.addNewIssue(issueDTO.buildIssue(), workItem);
+			URI location = uriInfo.getBaseUriBuilder().path(IssueResource.class).path(issue.getItemKey()).build();
+			return Response.created(location).build();
 		});
 	}
 	
@@ -97,7 +110,7 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	public Response addIssueToWorkItem(@ValidIssue IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getByItemKey(itemKey);
-			service.addIssueToWorkItem(issueDTO.getItemKey(), workItem);
+			service.addIssue(issueDTO.getItemKey(), workItem);
 			return Response.noContent().build();
 		});
 	}

@@ -89,9 +89,8 @@ public class UserResource extends BaseResource<User, UserService> {
 		return serviceRequest(() -> {
 			User user = service.getByItemKey(itemKey);
 			workItemQuery.setUser(user);
-			List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(),
-					workItemQuery.buildPageable());
-			return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems, true)).build();
+			List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(),	workItemQuery.buildPageable());
+			return Response.ok().entity(dtoFactory.buildWorkItemDTOs(userWorkItems, true, uriInfo)).build();
 		});
 	}
 

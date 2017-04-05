@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.model.WorkItem.Status;
@@ -19,7 +20,7 @@ public class WorkItemDTO extends AbstractDTO {
 	@JsonProperty
 	@JsonIgnoreProperties(value = {"workItems",  "teams"})
 	private List<UserDTO> users;
-	@JsonProperty
+	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = {"workItem"})
 	private List<IssueDTO> issues;
 

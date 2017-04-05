@@ -64,8 +64,7 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response byItemKey(String itemKey) {
 		return serviceRequest(() -> {
 			E entity = service.getByItemKey(itemKey);
-			AbstractDTO dto = dtoFactory.buildDTO(entity);
-			dto.setOrigin(uriInfo.getAbsolutePathBuilder().build());
+			AbstractDTO dto = dtoFactory.buildDTO(entity, uriInfo);
 			return Response.ok().entity(dto).build();
 		});
 	}
@@ -73,10 +72,7 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 	protected Response get(Specification<E> spec, Pageable pageable) {
 		return serviceRequest(() -> {
 			List<E> entities = service.query(spec, pageable);
-			List<AbstractDTO> dtos = dtoFactory.buildDTO(entities);
-			for(AbstractDTO dto : dtos) {
-				dto.setOrigin(uriInfo.getAbsolutePathBuilder().path(dto.getItemKey()).build());
-			}
+			List<AbstractDTO> dtos = dtoFactory.buildDTOs(entities, uriInfo);
 			return Response.ok().entity(dtos).build();
 		});
 	}

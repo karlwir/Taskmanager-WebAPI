@@ -19,7 +19,7 @@ public class WorkItemDTO extends AbstractDTO {
 	private Status status;
 	@JsonProperty
 	private Long priority;
-	@JsonProperty
+	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = {"workItems",  "teams"})
 	private List<UserDTO> users;
 	@JsonProperty(access = Access.READ_ONLY)

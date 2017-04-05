@@ -34,6 +34,7 @@ public @interface ValidWorkItem {
 				   workItemDTO.getItemKey().substring(0, 4).equals("b2dd") &&
 				   workItemDTO.getTitle() != null &&
 				   workItemDTO.getDescription() != null &&
+				   workItemDTO.getPriority() != null &&
 				   workItemDTO.getStatus() != null;
 		}
     }

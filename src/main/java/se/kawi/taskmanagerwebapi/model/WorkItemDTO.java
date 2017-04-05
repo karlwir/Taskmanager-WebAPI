@@ -18,6 +18,8 @@ public class WorkItemDTO extends AbstractDTO {
 	@JsonProperty
 	private Status status;
 	@JsonProperty
+	private Long priority;
+	@JsonProperty
 	@JsonIgnoreProperties(value = {"workItems",  "teams"})
 	private List<UserDTO> users;
 	@JsonProperty(access = Access.READ_ONLY)
@@ -31,12 +33,14 @@ public class WorkItemDTO extends AbstractDTO {
 		this.title = workItem.getTitle();
 		this.description = workItem.getDescription();
 		this.status = workItem.getStatus();
+		this.priority = workItem.getPriority();
 	}
 	
 	public WorkItem reflectDTO(WorkItem workItem) {
 		workItem.setTitle(this.title);
 		workItem.setDescription(this.description);
 		workItem.setStatus(this.status);
+		workItem.setPriority(this.priority);
 		return workItem;
 	}
 
@@ -54,6 +58,10 @@ public class WorkItemDTO extends AbstractDTO {
 
 	public Status getStatus() {
 		return status;
+	}
+	
+	public Long getPriority() {
+		return priority;
 	}
 	
 	public void setUsers(List<UserDTO> users) {

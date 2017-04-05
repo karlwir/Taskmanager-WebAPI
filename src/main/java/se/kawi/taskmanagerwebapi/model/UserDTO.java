@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import se.kawi.taskmanagerservicelib.model.User;
 
@@ -17,10 +18,10 @@ public class UserDTO extends AbstractDTO {
 	private String lastname;
 	@JsonProperty
 	private Boolean active;
-	@JsonProperty
+	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = "users")
 	private List<TeamDTO> teams;
-	@JsonProperty
+	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = {"users", "issues"})
 	private List<WorkItemDTO> workItems;
 	

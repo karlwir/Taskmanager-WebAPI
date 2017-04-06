@@ -18,7 +18,7 @@ public class WorkItemDTO extends AbstractDTO {
 	@JsonProperty
 	private Status status;
 	@JsonProperty
-	private Long priority;
+	private Float priority;
 	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = {"workItems",  "teams"})
 	private List<UserDTO> users;
@@ -45,7 +45,7 @@ public class WorkItemDTO extends AbstractDTO {
 	}
 
 	public WorkItem buildWorkItem() {
-		return new WorkItem(title, description);
+		return new WorkItem(title, description, priority);
 	}
 
 	public String getTitle() {
@@ -60,7 +60,7 @@ public class WorkItemDTO extends AbstractDTO {
 		return status;
 	}
 	
-	public Long getPriority() {
+	public Float getPriority() {
 		return priority;
 	}
 	

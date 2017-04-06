@@ -30,7 +30,8 @@ public @interface ValidWorkItemNew {
 		public boolean isValid(WorkItemDTO workItemDTO, ConstraintValidatorContext context) {
 			return workItemDTO != null &&
 				   workItemDTO.getTitle() != null &&
-				   workItemDTO.getDescription() != null;
+				   workItemDTO.getDescription() != null && 
+				   workItemDTO.getPriority() != null;
 		}
     }
 }

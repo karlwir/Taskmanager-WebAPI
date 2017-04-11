@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.2.RELEASE</version>
+		<version>1.5.1.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -24,12 +24,14 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+<!--
 	<repositories>
 		<repository>
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
+-->
 
 	<dependencies>
 		<dependency>
@@ -44,14 +46,14 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -68,20 +70,20 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
+	
+	<!-- 			
 		<dependency>
 		    <groupId>com.github.karlwir</groupId>
 		    <artifactId>Taskmanager-ServiceLib</artifactId>
 		    <version>72866a9213</version>
 		</dependency>
-
-	<!-- 		
+	 -->	
+		
 		<dependency>
 			<groupId>se.kawi</groupId>
 			<artifactId>Taskmanager-servicelib</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	 -->	
 	 
 	</dependencies>
 

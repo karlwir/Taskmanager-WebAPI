@@ -28,7 +28,7 @@ public class TeamQueryBean extends BaseQueryBean {
 		return (root, query, cb) -> {
 			List<Predicate> predicates = new ArrayList<>();
 			
-			if (!name.equals("")) {
+			if (name != null) {
 				predicates.add(cb.like(root.get(Team_.name), "%" + name + "%"));
 			}
 			if (active != null) {

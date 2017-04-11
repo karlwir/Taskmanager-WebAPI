@@ -35,7 +35,7 @@ import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItemNew;
 @Produces({ MediaType.APPLICATION_JSON + "; charset=UTF-8" })
 @Consumes({ MediaType.APPLICATION_JSON + "; charset=UTF-8" })
 public class UserResource extends BaseResource<User, UserService> {
-
+	
 	protected UserResource(UserService service) {
 		super(service);
 	}

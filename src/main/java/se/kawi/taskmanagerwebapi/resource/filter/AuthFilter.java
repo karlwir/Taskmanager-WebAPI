@@ -2,8 +2,8 @@ package se.kawi.taskmanagerwebapi.resource.filter;
 
 import java.io.IOException;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+//import javax.ws.rs.core.Response;
+//import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;

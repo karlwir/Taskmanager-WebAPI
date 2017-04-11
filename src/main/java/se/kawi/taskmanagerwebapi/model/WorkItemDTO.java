@@ -71,4 +71,8 @@ public class WorkItemDTO extends AbstractDTO {
 	public void setIssues(List<IssueDTO> issues) {
 		this.issues = issues;
 	}
+	
+	public String toJSONString() {
+		return String.format("{\"itemKey\": \"%s\", \"title\": \"%s\", \"description\": \"%s\", \"status\": \"%s\", \"priority\": \"%s\"}", getItemKey(), title, description, status, priority);
+	}
 }

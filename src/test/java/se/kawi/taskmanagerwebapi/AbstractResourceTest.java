@@ -28,9 +28,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public abstract class AbstractResourceTest {
 
 	protected String userResourceTarget = "http://localhost:8443/users";
-	protected String workItemResourceTarget = "http://localhost:8443/users";
-	protected String issueResourceTarget = "http://localhost:8443/users";
-	protected String teamResourceTarget = "http://localhost:8443/users";
+	protected String workItemResourceTarget = "http://localhost:8443/workitems";
+	protected String issueResourceTarget = "http://localhost:8443/issues";
+	protected String teamResourceTarget = "http://localhost:8443/teams";
 	
 	protected Client client;
 

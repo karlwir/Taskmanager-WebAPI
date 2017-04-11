@@ -12,7 +12,6 @@ import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidWorkItem.Validator.class)
-
 public @interface ValidWorkItem {
 	
     String message() default "Invalid work item";

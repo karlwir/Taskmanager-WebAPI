@@ -38,6 +38,7 @@ public class UserDTO extends AbstractDTO {
 	public User reflectDTO(User user) {
 		user.setFirstName(this.firstname);
 		user.setLastName(this.lastname);
+		user.setUsername(this.username);
 		user.setActiveUser(this.active);
 		return user;
 	}

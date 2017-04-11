@@ -73,8 +73,8 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 
 	@DELETE
 	@Path("/{itemKey}")
-	public Response deleteIssue(@PathParam("itemKey") String itemKey, @ValidIssue IssueDTO issueDTO) {
-		return super.delete(itemKey, issueDTO);
+	public Response deleteIssue(@PathParam("itemKey") String itemKey) {
+		return super.delete(itemKey);
 	}
 
 }

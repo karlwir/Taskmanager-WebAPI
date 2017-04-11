@@ -79,8 +79,8 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 
 	@DELETE
 	@Path("/{itemKey}")
-	public Response deleteTeam(@PathParam("itemKey") String itemKey, @ValidTeam TeamDTO teamDTO) {
-		return super.delete(itemKey, teamDTO);
+	public Response deleteTeam(@PathParam("itemKey") String itemKey) {
+		return super.delete(itemKey);
 	}
 
 	@GET

@@ -79,8 +79,8 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	
 	@DELETE
 	@Path("/{itemKey}")
-	public Response deleteWorkItem(@PathParam("itemKey") String itemKey, @ValidWorkItem WorkItemDTO workItemDTO) {
-		return super.delete(itemKey, workItemDTO);
+	public Response deleteWorkItem(@PathParam("itemKey") String itemKey) {
+		return super.delete(itemKey);
 	}
 	
 	@GET

@@ -79,8 +79,8 @@ public class UserResource extends BaseResource<User, UserService> {
 
 	@DELETE
 	@Path("/{itemKey}")
-	public Response deleteUser(@PathParam("itemKey") String itemKey, @ValidUser UserDTO userDTO) {
-		return super.delete(itemKey, userDTO);
+	public Response deleteUser(@PathParam("itemKey") String itemKey) {
+		return super.delete(itemKey);
 	}
 
 	@GET

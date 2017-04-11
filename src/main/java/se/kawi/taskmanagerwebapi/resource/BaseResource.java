@@ -84,16 +84,12 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		});		
 	}
 	
-	protected Response delete(String itemKey, AbstractDTO abstractDTO) {
-		if (itemKey.equals(abstractDTO.getItemKey())) {
-			return serviceRequest(() -> {
-				E entity = service.getByItemKey(abstractDTO.getItemKey());
-				service.delete(entity);
-				return Response.noContent().build();
-			});
-		} else {
-			throw new BadRequestException("Item key in JSON dont match item key in url");
-		}
+	protected Response delete(String itemKey) {
+		return serviceRequest(() -> {
+			E entity = service.getByItemKey(itemKey);
+			service.delete(entity);
+			return Response.noContent().build();
+		});
 	}
 
 }

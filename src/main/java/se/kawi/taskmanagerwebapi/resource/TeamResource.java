@@ -105,11 +105,11 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@DELETE
-	@Path("/{itemKey}/users")
-	public Response removeTeamMember(@ValidUser UserDTO userDTO, @PathParam("itemKey") String itemKey) {
+	@Path("/{teamItemKey}/users/{userItemKey}")
+	public Response removeTeamMember(@PathParam("teamItemKey") String teamItemKey, @PathParam("teamItemKey") String userItemKey) {
 		return serviceRequest(() -> {
-			Team team = service.getByItemKey(itemKey);
-			service.removeTeamMember(userDTO.getItemKey(), team);
+			Team team = service.getByItemKey(teamItemKey);
+			service.removeTeamMember(userItemKey, team);
 			return Response.noContent().build();
 		});
 	}

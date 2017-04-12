@@ -27,10 +27,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public abstract class AbstractResourceTest {
 
-	protected String userResourceTarget = "http://localhost:8443/users";
-	protected String workItemResourceTarget = "http://localhost:8443/workitems";
-	protected String issueResourceTarget = "http://localhost:8443/issues";
-	protected String teamResourceTarget = "http://localhost:8443/teams";
+	protected final static String USER_RESOURCE_URI = "http://localhost:8443/users";
+	protected final static String WORKITEM_RESOURCE_URI = "http://localhost:8443/workitems";
+	protected final static String ISSUE_RESOURCE_URI = "http://localhost:8443/issues";
+	protected final static String TEAM_RESOURCE_URI = "http://localhost:8443/teams";
 	
 	protected Client client;
 

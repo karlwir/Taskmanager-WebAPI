@@ -44,7 +44,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canCreateAndGetWorkItem() {
 		// Create work item
-		Response postResponse = client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		Response postResponse = client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		String location = postResponse.getHeaderString("location");
 
 		// Get user and tests
@@ -61,13 +61,13 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canCreateAndGetWorkItems() throws JSONException {
 		// Create first work item
-		client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 
 		// Create second work item
-		client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		
 		// Get all work item and test
-		Response getResponse = client.target(workItemResourceTarget).request().get();
+		Response getResponse = client.target(WORKITEM_RESOURCE_URI).request().get();
 		List<WorkItemDTO> workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 	}
@@ -75,50 +75,50 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canCreateAndCountWorkItems() throws JSONException {
 		// Create first work item
-		client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 
 		// Create second work item
 		newWorkItem.put("title", "Second item title");
 		newWorkItem.put("description", "Second item description");
-		client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 
 		// Count all work items
-		Response countResponse = client.target(workItemResourceTarget).path("count").request().get();
+		Response countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").request().get();
 		int quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 
 		// Count work items with title including "...title..."
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("title", "title").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("title", "title").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 
 		// Count work items with description including "...Second..."
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("description", "Second").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("description", "Second").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(1, quantity);
 		
 		// Count work items with status DONE
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("status", "UNSTARTED").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("status", "UNSTARTED").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 
 		// Count work items with isssues
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("hasissues", "true").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("hasissues", "true").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(0, quantity);
 
 		// Count work items without isssues
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("hasissues", "false").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("hasissues", "false").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 		
 		// Count UNSTARTED work items without issues
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("status", "UNSTARTED").queryParam("hasissues", "true").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("status", "UNSTARTED").queryParam("hasissues", "true").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(0, quantity);
 		
 		// Count UNSTARTED work items with title "Second..."
-		countResponse = client.target(workItemResourceTarget).path("count").queryParam("status", "UNSTARTED").queryParam("title", "Second").request().get();
+		countResponse = client.target(WORKITEM_RESOURCE_URI).path("count").queryParam("status", "UNSTARTED").queryParam("title", "Second").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(1, quantity);
 	}
@@ -126,70 +126,70 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canCreateAndGetWorkitemsWithQueries() throws JSONException {
 		// Create first work item
-		client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 
 		// Create second work item
 		newWorkItem.put("title", "Second item title");
 		newWorkItem.put("description", "Second item description");
-		client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		
 		// Title
-		Response getResponse = client.target(workItemResourceTarget).queryParam("title", "title").request().get();
+		Response getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("title", "title").request().get();
 		List<WorkItemDTO> workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 
 		// Description
-		getResponse = client.target(workItemResourceTarget).queryParam("description", "Second item").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("description", "Second item").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(1, workItemDTOs.size());
 
 		// Status UNSTARTED
-		getResponse = client.target(workItemResourceTarget).queryParam("status", "UNSTARTED").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("status", "UNSTARTED").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 
 		// Status UNSTARTED
-		getResponse = client.target(workItemResourceTarget).queryParam("status", "DONE").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("status", "DONE").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(0, workItemDTOs.size());
 
 		// Has issues
-		getResponse = client.target(workItemResourceTarget).queryParam("hasissues", "true").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("hasissues", "true").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(0, workItemDTOs.size());
 
 		// Has no issues
-		getResponse = client.target(workItemResourceTarget).queryParam("hasissues", "false").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("hasissues", "false").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 
 		// Two matching params
-		getResponse = client.target(workItemResourceTarget).queryParam("status", "UNSTARTED").queryParam("hasissues", "false").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("status", "UNSTARTED").queryParam("hasissues", "false").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 
 		// Two non matching params
-		getResponse = client.target(workItemResourceTarget).queryParam("title", "title").queryParam("description", "cake").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("title", "title").queryParam("description", "cake").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(0, workItemDTOs.size());
 
 		// Three matching params
-		getResponse = client.target(workItemResourceTarget).queryParam("title", "title").queryParam("description", "description").queryParam("status", "UNSTARTED").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("title", "title").queryParam("description", "description").queryParam("status", "UNSTARTED").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 		
 		// Three non matching params
-		getResponse = client.target(workItemResourceTarget).queryParam("title", "title").queryParam("description", "description").queryParam("hasissues", "true").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("title", "title").queryParam("description", "description").queryParam("hasissues", "true").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(0, workItemDTOs.size());
 
 		// Four matching params
-		getResponse = client.target(workItemResourceTarget).queryParam("title", "title").queryParam("description", "description").queryParam("status", "UNSTARTED").queryParam("hasissues", "false").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("title", "title").queryParam("description", "description").queryParam("status", "UNSTARTED").queryParam("hasissues", "false").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(2, workItemDTOs.size());
 		
 		// Four non matching params
-		getResponse = client.target(workItemResourceTarget).queryParam("title", "title").queryParam("description", "description").queryParam("status", "UNSTARTED").queryParam("hasissues", "true").request().get();
+		getResponse = client.target(WORKITEM_RESOURCE_URI).queryParam("title", "title").queryParam("description", "description").queryParam("status", "UNSTARTED").queryParam("hasissues", "true").request().get();
 		workItemDTOs = getResponse.readEntity(new GenericType<List<WorkItemDTO>>(){});
 		assertEquals(0, workItemDTOs.size());
 
@@ -198,7 +198,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canCreateAndUpdateWorkItem() throws JSONException {
 		// Create the work item
-		Response postResponse = client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		Response postResponse = client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		String location = postResponse.getHeaderString("location");
 		Response getResponse = client.target(location).request().get();
 		WorkItemDTO createdWorkItemDTO = getResponse.readEntity(WorkItemDTO.class);
@@ -219,7 +219,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canCreateAndDeleteWorkItem() {
 		// Create the work item
-		Response postResponse = client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		Response postResponse = client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		String location = postResponse.getHeaderString("location");
 
 		// Delete the work item and test
@@ -230,7 +230,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 	@Test
 	public void canAddAndRemoveIssuesFromWorkItem() throws JSONException {
 		// Create the work item
-		Response postResponse = client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		Response postResponse = client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		String workItemlocation = postResponse.getHeaderString("location");
 		Response getResponse = client.target(workItemlocation).request().get();
 		WorkItemDTO createdWorkItemDTO = getResponse.readEntity(WorkItemDTO.class);
@@ -240,7 +240,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 		client.target(workItemlocation).request().put(Entity.json(updateWorkItem.toString()));
 		
 		// Create and get the issue
-		Response issuePostResponse = client.target(issueResourceTarget).request().post(Entity.json(newIssue.toString()));
+		Response issuePostResponse = client.target(ISSUE_RESOURCE_URI).request().post(Entity.json(newIssue.toString()));
 		String issueLocation = issuePostResponse.getHeaderString("location");
 		Response issueGetResponse = client.target(issueLocation).request().get();
 		IssueDTO createdIssueDTO = issueGetResponse.readEntity(IssueDTO.class);

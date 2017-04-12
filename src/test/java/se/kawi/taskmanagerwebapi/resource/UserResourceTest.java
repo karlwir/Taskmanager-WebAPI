@@ -42,7 +42,7 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canCreateAndGetUser() {
 		// Create user
-		Response postResponse = client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		Response postResponse = client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 		String location = postResponse.getHeaderString("location");
 
 		// Get user and tests
@@ -59,14 +59,14 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canCreateAndGetUsers() throws JSONException {
 		// Create first user
-		client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 		
 		// Create second user
 		newUser.put("username", "kawi02");
-		client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 		
 		// Get all users and test
-		Response getResponse = client.target(userResourceTarget).request().get();
+		Response getResponse = client.target(USER_RESOURCE_URI).request().get();
 		List<UserDTO> userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(2, userDTOs.size());
 	}
@@ -74,49 +74,49 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canCreateAndCountUsers() throws JSONException {
 		// Create first user
-		client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 
 		// Create second user
 		newUser.put("username", "kawi02");
-		client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 
 		// Count all users
-		Response countResponse = client.target(userResourceTarget).path("count").request().get();
+		Response countResponse = client.target(USER_RESOURCE_URI).path("count").request().get();
 		int quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 
 		// Count users with firstname Karl
-		countResponse = client.target(userResourceTarget).path("count").queryParam("firstname", "Karl").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("firstname", "Karl").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 
 		// Count users with lastname Wirfelt
-		countResponse = client.target(userResourceTarget).path("count").queryParam("lastname", "Wirfelt").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("lastname", "Wirfelt").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 		
 		// Count users with username kawi01
-		countResponse = client.target(userResourceTarget).path("count").queryParam("username", "kawi01").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("username", "kawi01").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(1, quantity);
 
 		// Count active users
-		countResponse = client.target(userResourceTarget).path("count").queryParam("active", "true").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("active", "true").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 
 		// Count inactive users
-		countResponse = client.target(userResourceTarget).path("count").queryParam("active", "false").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("active", "false").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(0, quantity);
 		
 		// Count active users with firstname Karl
-		countResponse = client.target(userResourceTarget).path("count").queryParam("active", "true").queryParam("firstname", "Karl").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("active", "true").queryParam("firstname", "Karl").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(2, quantity);
 		
 		// Count inactive users with lastname Wirfelt
-		countResponse = client.target(userResourceTarget).path("count").queryParam("active", "false").queryParam("lastname", "Wirfelt").request().get();
+		countResponse = client.target(USER_RESOURCE_URI).path("count").queryParam("active", "false").queryParam("lastname", "Wirfelt").request().get();
 		quantity = countResponse.readEntity(Integer.class);
 		assertEquals(0, quantity);
 	}
@@ -124,65 +124,65 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canCreateAndGetUsersWithQueries() throws JSONException {
 		// Create first user
-		client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 
 		// Create second user		
 		newUser.put("lastname", "Karlsson");
 		newUser.put("username", "kaka01");
-		client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 		
 		// Firstname
-		Response getResponse = client.target(userResourceTarget).queryParam("firstname", "Karl").request().get();
+		Response getResponse = client.target(USER_RESOURCE_URI).queryParam("firstname", "Karl").request().get();
 		List<UserDTO> userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(2, userDTOs.size());
 
 		// Lastname
-		getResponse = client.target(userResourceTarget).queryParam("lastname", "Wirfelt").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("lastname", "Wirfelt").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(1, userDTOs.size());
 
 		// Username
-		getResponse = client.target(userResourceTarget).queryParam("username", "kawi01").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("username", "kawi01").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(1, userDTOs.size());
 
 		// Active user true
-		getResponse = client.target(userResourceTarget).queryParam("active", "true").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("active", "true").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(2, userDTOs.size());
 
 		// Active user false
-		getResponse = client.target(userResourceTarget).queryParam("active", "false").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("active", "false").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(0, userDTOs.size());
 
 		// Two matching params
-		getResponse = client.target(userResourceTarget).queryParam("firstname", "Karl").queryParam("active", "true").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("firstname", "Karl").queryParam("active", "true").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(2, userDTOs.size());
 
 		// Two non matching params
-		getResponse = client.target(userResourceTarget).queryParam("lastname", "Wirfelt").queryParam("username", "kaka01").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("lastname", "Wirfelt").queryParam("username", "kaka01").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(0, userDTOs.size());
 
 		// Three matching params
-		getResponse = client.target(userResourceTarget).queryParam("firstname", "Karl").queryParam("lastname", "Wirfelt").queryParam("active", "true").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("firstname", "Karl").queryParam("lastname", "Wirfelt").queryParam("active", "true").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(1, userDTOs.size());
 		
 		// Three non matching params
-		getResponse = client.target(userResourceTarget).queryParam("firstname", "Karl").queryParam("lastname", "Karlsson").queryParam("active", "false").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("firstname", "Karl").queryParam("lastname", "Karlsson").queryParam("active", "false").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(0, userDTOs.size());
 
 		// Four matching params
-		getResponse = client.target(userResourceTarget).queryParam("firstname", "Karl").queryParam("lastname", "Wirfelt").queryParam("username", "kawi01").queryParam("active", "true").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("firstname", "Karl").queryParam("lastname", "Wirfelt").queryParam("username", "kawi01").queryParam("active", "true").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(1, userDTOs.size());
 		
 		// Four non matching params
-		getResponse = client.target(userResourceTarget).queryParam("firstname", "Karl").queryParam("lastname", "Karlsson").queryParam("username", "kaka01").queryParam("active", "false").request().get();
+		getResponse = client.target(USER_RESOURCE_URI).queryParam("firstname", "Karl").queryParam("lastname", "Karlsson").queryParam("username", "kaka01").queryParam("active", "false").request().get();
 		userDTOs = getResponse.readEntity(new GenericType<List<UserDTO>>(){});
 		assertEquals(0, userDTOs.size());
 
@@ -191,7 +191,7 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canCreateAndUpdateUser() throws JSONException {
 		// Create the user
-		Response postResponse = client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		Response postResponse = client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 		String location = postResponse.getHeaderString("location");
 		Response getResponse = client.target(location).request().get();
 		UserDTO createdUserDTO = getResponse.readEntity(UserDTO.class);
@@ -212,7 +212,7 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canCreateAndDeleteUser() {
 		// Create the user
-		Response postResponse = client.target(userResourceTarget) .request().post(Entity.json(newUser.toString()));
+		Response postResponse = client.target(USER_RESOURCE_URI) .request().post(Entity.json(newUser.toString()));
 		String location = postResponse.getHeaderString("location");
 
 		// Delete the user and test
@@ -223,11 +223,11 @@ public class UserResourceTest extends AbstractResourceTest{
 	@Test
 	public void canAssignAndWithdrawWorkItemFromUser() {
 		// Create the user
-		Response userPostResponse = client.target(userResourceTarget).request().post(Entity.json(newUser.toString()));
+		Response userPostResponse = client.target(USER_RESOURCE_URI).request().post(Entity.json(newUser.toString()));
 		String userLocation = userPostResponse.getHeaderString("location");
 		
 		// Create and get the work item
-		Response workItemPostResponse = client.target(workItemResourceTarget).request().post(Entity.json(newWorkItem.toString()));
+		Response workItemPostResponse = client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		String workItemLocation = workItemPostResponse.getHeaderString("location");
 		Response workItemGetResponse = client.target(workItemLocation).request().get();
 		WorkItemDTO createdWorkItemDTO = workItemGetResponse.readEntity(WorkItemDTO.class);

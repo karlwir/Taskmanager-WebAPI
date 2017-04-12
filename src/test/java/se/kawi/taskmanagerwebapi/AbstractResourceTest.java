@@ -63,6 +63,7 @@ public abstract class AbstractResourceTest {
 				try {
 					stmt.execute("DELETE FROM PUBLIC.USERS");
 					stmt.execute("DELETE FROM PUBLIC.WORKITEMS");
+					stmt.execute("DELETE FROM PUBLIC.ISSUES");
 					connection.commit();
 				} finally {
 					stmt.close();

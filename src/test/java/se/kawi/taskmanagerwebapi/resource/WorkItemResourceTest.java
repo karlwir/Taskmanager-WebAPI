@@ -47,7 +47,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 		Response postResponse = client.target(WORKITEM_RESOURCE_URI).request().post(Entity.json(newWorkItem.toString()));
 		String location = postResponse.getHeaderString("location");
 
-		// Get user and tests
+		// Get work item and tests
 		Response getResponse = client.target(location).request().get();
 		WorkItemDTO createdWorkItemDTO = getResponse.readEntity(WorkItemDTO.class);
 		assertEquals("New work item title", createdWorkItemDTO.getTitle());

@@ -116,11 +116,11 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 	
 	@DELETE
-	@Path("{itemKey}/issues")
-	public Response removeIssueFromWorkItem(@ValidIssue IssueDTO issueDTO, @PathParam("itemKey") String itemKey) {
+	@Path("{workitemItemKey}/issues/{issueItemKey}")
+	public Response removeIssueFromWorkItem(@PathParam("workitemItemKey") String workitemItemKey, @PathParam("issueItemKey") String issueItemKey) {
 		return serviceRequest(() -> {
-			WorkItem workItem = service.getByItemKey(itemKey);
-			service.removeIssueFromWorkItem(issueDTO.getItemKey(), workItem);
+			WorkItem workItem = service.getByItemKey(workitemItemKey);
+			service.removeIssueFromWorkItem(issueItemKey, workItem);
 			return Response.noContent().build();
 		});
 	}

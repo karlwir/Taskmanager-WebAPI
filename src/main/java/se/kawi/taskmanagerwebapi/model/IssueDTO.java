@@ -56,5 +56,9 @@ public class IssueDTO extends AbstractDTO {
 	public void setWorkItem(WorkItemDTO workItem) {
 		this.workItem = workItem;
 	}
+
+	public String toJSONString() {
+		return String.format("{\"itemKey\": \"%s\", \"title\": \"%s\", \"description\": \"%s\", \"open\": %s}", getItemKey(), title, description, open);
+	}
 	
 }

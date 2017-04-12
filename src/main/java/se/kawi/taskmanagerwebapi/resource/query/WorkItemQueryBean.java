@@ -73,10 +73,10 @@ public class WorkItemQueryBean extends BaseQueryBean {
 				Set<Predicate> orPredicates = new HashSet<>();
 				
 				for(User user : users) {
-					List<Predicate> pandPedicatesCopy = new ArrayList<>();
-					pandPedicatesCopy.addAll(andPredicates);
-					pandPedicatesCopy.add(cb.isMember(user, root.get(WorkItem_.users)));
-					orPredicates.add(cb.and(pandPedicatesCopy.toArray(new Predicate[pandPedicatesCopy.size()])));
+					List<Predicate> andPedicatesCopy = new ArrayList<>();
+					andPedicatesCopy.addAll(andPredicates);
+					andPedicatesCopy.add(cb.isMember(user, root.get(WorkItem_.users)));
+					orPredicates.add(cb.and(andPedicatesCopy.toArray(new Predicate[andPedicatesCopy.size()])));
 				}
 				return cb.or(orPredicates.toArray(new Predicate[orPredicates.size()]));
 			}

@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
 
-import se.kawi.taskmanagerwebapi.AbstractResourceTest;
 import se.kawi.taskmanagerwebapi.model.UserDTO;
 import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 

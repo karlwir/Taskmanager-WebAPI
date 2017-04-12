@@ -18,7 +18,6 @@ import org.junit.Test;
 import se.kawi.taskmanagerwebapi.model.IssueDTO;
 import se.kawi.taskmanagerwebapi.model.WorkItemDTO;
 import se.kawi.taskmanagerservicelib.model.WorkItem;
-import se.kawi.taskmanagerwebapi.AbstractResourceTest;
 
 public class WorkItemResourceTest extends AbstractResourceTest {
 

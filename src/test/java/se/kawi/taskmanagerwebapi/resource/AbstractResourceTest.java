@@ -1,4 +1,4 @@
-package se.kawi.taskmanagerwebapi;
+package se.kawi.taskmanagerwebapi.resource;
 
 import static org.junit.Assert.fail;
 

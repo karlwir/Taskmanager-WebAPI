@@ -17,7 +17,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import se.kawi.taskmanagerwebapi.AbstractResourceTest;
 import se.kawi.taskmanagerwebapi.model.IssueDTO;
 
 public class IssueResourceTest extends AbstractResourceTest {

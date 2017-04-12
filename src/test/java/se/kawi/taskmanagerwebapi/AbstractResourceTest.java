@@ -61,9 +61,12 @@ public abstract class AbstractResourceTest {
 			try {
 				Statement stmt = connection.createStatement();
 				try {
+					stmt.execute("DELETE FROM PUBLIC.USERS_WORKITEMS");
+					stmt.execute("DELETE FROM PUBLIC.TEAMS_USERS");
 					stmt.execute("DELETE FROM PUBLIC.USERS");
 					stmt.execute("DELETE FROM PUBLIC.WORKITEMS");
 					stmt.execute("DELETE FROM PUBLIC.ISSUES");
+					stmt.execute("DELETE FROM PUBLIC.TEAMS");
 					connection.commit();
 				} finally {
 					stmt.close();

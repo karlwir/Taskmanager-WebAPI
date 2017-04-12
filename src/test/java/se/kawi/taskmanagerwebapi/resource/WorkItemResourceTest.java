@@ -251,7 +251,7 @@ public class WorkItemResourceTest extends AbstractResourceTest {
 		List<IssueDTO> issueDTOs = workItemIssuesGetResponse.readEntity(new GenericType<List<IssueDTO>>(){});
 		assertEquals(1, issueDTOs.size());
 		
-		//Create and assign work item in one request and test
+		//Create and add issue in one request and test
 		Response postAddIssueResponse = client.target(workItemlocation).path("issues").request().post(Entity.json(newIssue.toString()));
 		String secondIssueLocation = postAddIssueResponse.getHeaderString("location");
 		issueGetResponse = client.target(secondIssueLocation).request().get();

@@ -47,5 +47,9 @@ public class TeamDTO extends AbstractDTO {
 	public void setUserDTOs(List<UserDTO> users) {
 		this.users = users;
 	}
+
+	public String toJSONString() {
+		return String.format("{\"itemKey\": \"%s\", \"name\": \"%s\", \"active\": %s}", getItemKey(), name, active);
+	}
 	
 }

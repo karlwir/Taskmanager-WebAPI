@@ -70,5 +70,9 @@ public class UserDTO extends AbstractDTO {
 	public void setWorkItemDTOs(List<WorkItemDTO> workItems) {
 		this.workItems = workItems;
 	}
+
+	public String toJSONString() {
+		return String.format("{\"itemKey\": \"%s\", \"firstname\": \"%s\", \"lastname\": \"%s\", \"username\": \"%s\", \"active\": %s}", getItemKey(), firstname, lastname, username, active);
+	}
 	
 }

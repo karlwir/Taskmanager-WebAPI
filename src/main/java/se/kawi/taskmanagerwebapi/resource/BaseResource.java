@@ -57,7 +57,7 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		return serviceRequest(() -> {
 			E savedEntity = service.save(entity);
 			URI location = uriInfo.getAbsolutePathBuilder().path(savedEntity.getItemKey()).build();
-			return Response.created(location).build();
+			return Response.created(location).header("generatedKey", savedEntity.getItemKey()).build();
 		});
 	}
 

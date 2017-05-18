@@ -22,13 +22,11 @@ import se.kawi.taskmanagerservicelib.model.WorkItem;
 import se.kawi.taskmanagerservicelib.service.TeamService;
 import se.kawi.taskmanagerwebapi.exception.BadRequestException;
 import se.kawi.taskmanagerwebapi.model.TeamDTO;
-import se.kawi.taskmanagerwebapi.model.UserDTO;
 import se.kawi.taskmanagerwebapi.resource.query.TeamQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.UserQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidTeam;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidTeamNew;
-import se.kawi.taskmanagerwebapi.resource.validation.ValidUser;
 
 @Component
 @Path("/teams")
@@ -95,11 +93,11 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@PUT
-	@Path("/{itemKey}/users")
-	public Response addTeamMember(@ValidUser UserDTO userDTO, @PathParam("itemKey") String itemKey) {
+	@Path("/{teamItemKey}/users/{userItemKey}")
+	public Response addTeamMember(@PathParam("teamItemKey") String teamItemKey, @PathParam("userItemKey") String userItemKey) {
 		return serviceRequest(() -> {
-			Team team = service.getByItemKey(itemKey);
-			service.addTeamMember(userDTO.getItemKey(), team);
+			Team team = service.getByItemKey(teamItemKey);
+			service.addTeamMember(userItemKey, team);
 			return Response.noContent().build();
 		});
 	}

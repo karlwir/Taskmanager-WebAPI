@@ -13,6 +13,8 @@ public class TeamDTO extends AbstractDTO {
 	@JsonProperty
 	private String name;
 	@JsonProperty
+	private String description;
+	@JsonProperty
 	private Boolean active;
 	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = {"teams", "workItems"})
@@ -24,6 +26,7 @@ public class TeamDTO extends AbstractDTO {
 		super(team);
 		this.name = team.getName();
 		this.active = team.isActive();
+		this.description = "No description support in API, yet :(";
 	}
 	
 	public Team reflectDTO(Team team) {

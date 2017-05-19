@@ -28,7 +28,8 @@ public @interface ValidTeamNew {
 		@Override
 		public boolean isValid(TeamDTO teamDTO, ConstraintValidatorContext context) {
 			return teamDTO != null &&
-				   teamDTO.getName() != null;
+				   teamDTO.getName() != null && 
+				   teamDTO.getDescription() != null;
 		}
     }
 }

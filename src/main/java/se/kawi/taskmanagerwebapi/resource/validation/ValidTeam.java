@@ -32,6 +32,7 @@ public @interface ValidTeam {
 				   teamDTO.getItemKey().length() == 36 &&
 				   teamDTO.getItemKey().substring(0, 4).equals("b2db") &&
 				   teamDTO.getName() != null &&
+				   teamDTO.getDescription() != null &&
 				   teamDTO.isActive() != null;
 		}
     }

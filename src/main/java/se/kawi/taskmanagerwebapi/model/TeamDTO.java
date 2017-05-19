@@ -26,21 +26,26 @@ public class TeamDTO extends AbstractDTO {
 		super(team);
 		this.name = team.getName();
 		this.active = team.isActive();
-		this.description = "No description support in API, yet :(";
+		this.description = team.getDescription();
 	}
 	
 	public Team reflectDTO(Team team) {
 		team.setName(name);
+		team.setDescription(description);
 		team.setActive(active);
 		return team;
 	}
 	
 	public Team buildTeam() {
-		return new Team(name);
+		return new Team(name, description);
 	}
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 	
 	public Boolean isActive() {
@@ -52,7 +57,7 @@ public class TeamDTO extends AbstractDTO {
 	}
 
 	public String toJSONString() {
-		return String.format("{\"itemKey\": \"%s\", \"name\": \"%s\", \"active\": %s}", getItemKey(), name, active);
+		return String.format("{\"itemKey\": \"%s\", \"name\": \"%s\", \"description\": \"%s\", \"active\": %s}", getItemKey(), name, description, active);
 	}
 	
 }

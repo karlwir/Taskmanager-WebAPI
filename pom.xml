@@ -25,11 +25,11 @@
 	</properties>
 
 	<repositories>
-		<repository>
-	        <id>Taskmanager-WebAPI.local</id>
-	        <name>Taskmanager-WebAPI</name>
+	    <repository>
+	        <id>project.local</id>
+	        <name>project</name>
 	        <url>file:${project.basedir}/repo</url>
-   		</repository>
+	    </repository>
 	</repositories>
 
 	<dependencies>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>se.kawi</groupId>
 			<artifactId>Taskmanager-servicelib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 	 
 	</dependencies>

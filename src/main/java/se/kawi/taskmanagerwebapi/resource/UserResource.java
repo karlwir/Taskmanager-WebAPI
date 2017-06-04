@@ -106,11 +106,11 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@PUT
-	@Path("/{itemKey}/workitems")
-	public Response assignWorkItem(@ValidWorkItem WorkItemDTO workItemDTO, @PathParam("itemKey") String itemKey) {
+	@Path("/{userItemKey}/workitems/{workItemItemKey}")
+	public Response assignWorkItem(@PathParam("{userItemKey}") String userItemKey, @PathParam("{workItemItemKey}") String workItemItemKey) {
 		return serviceRequest(() -> {
-			User user = service.getByItemKey(itemKey);
-			service.assignWorkItem(workItemDTO.getItemKey(), user);
+			User user = service.getByItemKey(userItemKey);
+			service.assignWorkItem(workItemItemKey, user);
 			return Response.noContent().build();
 		});
 	}

@@ -18,6 +18,7 @@ public class UserQueryBean extends BaseQueryBean {
 	@QueryParam("firstname") private String firstname;
 	@QueryParam("lastname") private String lastname;
 	@QueryParam("username") private String username;
+	@QueryParam("email") private String email;
 	@QueryParam("active") private String active;
 	
 	
@@ -25,6 +26,10 @@ public class UserQueryBean extends BaseQueryBean {
 	
 	public void setTeam(Team teams) {
 		this.teams = teams;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	@Override
@@ -46,6 +51,9 @@ public class UserQueryBean extends BaseQueryBean {
 			}
 			if (username != null) {
 				predicates.add(cb.equal(root.get(User_.username), username));
+			}
+			if (email != null) {
+				predicates.add(cb.equal(root.get(User_.email), email));
 			}
 			if (active != null) {
 				if (active.toLowerCase().equals("true") || active.toLowerCase().equals("false")) {

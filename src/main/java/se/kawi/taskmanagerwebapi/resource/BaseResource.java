@@ -76,6 +76,14 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 			return Response.ok().entity(dtos).build();
 		});
 	}
+	
+	protected Response getOne(Specification<E> spec, Pageable pageable) {
+		return serviceRequest(() -> {
+			E entity = service.queryOne(spec, pageable);
+			AbstractDTO dto = dtoFactory.buildDTO(entity, uriInfo);
+			return Response.ok().entity(dto).build();
+		});
+	}
 
 	public Response count(Specification<E> spec) {
 		return serviceRequest (() -> {

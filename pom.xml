@@ -76,11 +76,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 	
-		<dependency>
-		    <groupId>com.github.karlwir</groupId>
-		    <artifactId>Taskmanager-ServiceLib</artifactId>
-		    <version>6a5bd7646d</version>
-		</dependency>
+	<dependency>
+	    <groupId>com.github.karlwir</groupId>
+	    <artifactId>Taskmanager-ServiceLib</artifactId>
+	    <version>2bc5d836e0</version>
+	</dependency>
 	 
 	<!-- 			
 		<dependency>

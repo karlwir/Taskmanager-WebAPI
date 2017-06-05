@@ -27,7 +27,6 @@ import se.kawi.taskmanagerwebapi.resource.query.UserQueryBean;
 import se.kawi.taskmanagerwebapi.resource.query.WorkItemQueryBean;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidUser;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidUserNew;
-import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItem;
 import se.kawi.taskmanagerwebapi.resource.validation.ValidWorkItemNew;
 
 @Component

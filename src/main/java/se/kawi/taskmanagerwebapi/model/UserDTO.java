@@ -17,6 +17,8 @@ public class UserDTO extends AbstractDTO {
 	@JsonProperty
 	private String lastname;
 	@JsonProperty
+	private String email;
+	@JsonProperty
 	private Boolean active;
 	@JsonProperty(access = Access.READ_ONLY)
 	@JsonIgnoreProperties(value = "users")
@@ -32,6 +34,7 @@ public class UserDTO extends AbstractDTO {
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();
 		this.lastname = user.getLastname();
+		this.email = user.getEmail();
 		this.active = user.isActiveUser();
 	}
 
@@ -40,11 +43,12 @@ public class UserDTO extends AbstractDTO {
 		user.setLastName(this.lastname);
 		user.setUsername(this.username);
 		user.setActiveUser(this.active);
+		user.setEmail(email);
 		return user;
 	}
 	
 	public User buildUser() {
-		return new User(username, firstname, lastname);
+		return new User(username, firstname, lastname, email);
 	}
 
 	public String getUsername() {
@@ -57,6 +61,10 @@ public class UserDTO extends AbstractDTO {
 
 	public String getLastname() {
 		return lastname;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 
 	public Boolean isActive() {
@@ -72,7 +80,7 @@ public class UserDTO extends AbstractDTO {
 	}
 
 	public String toJSONString() {
-		return String.format("{\"itemKey\": \"%s\", \"firstname\": \"%s\", \"lastname\": \"%s\", \"username\": \"%s\", \"active\": %s}", getItemKey(), firstname, lastname, username, active);
+		return String.format("{\"itemKey\": \"%s\", \"firstname\": \"%s\", \"lastname\": \"%s\", \"username\": \"%s\", \"email\": \"%s\", \"active\": %s}", getItemKey(), firstname, lastname, username, email, active);
 	}
 	
 }

@@ -14,7 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 abstract class BaseQueryBean {
 
 	@QueryParam("page") @DefaultValue("0") private int page;
-	@QueryParam("pagesize") @DefaultValue("25") private int pageSize;
+	@QueryParam("pagesize") @DefaultValue("200") private int pageSize;
 	@QueryParam("sort") @DefaultValue("asc") private String sort;
 	@QueryParam("sortby") private String sortBy;
 	
